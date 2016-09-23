@@ -1,0 +1,28 @@
+# ignore intellij idea related settings
+**/.idea
+**/*.iml
+**/.ipr
+**/*.ipr
+
+
+# ignore  build related things
+**/target
+**/build
+**/overlays
+**/dependency-reduced-pom.xml
+**/bin
+
+# ignore eclipse related settings
+**/.classpath
+**/.project
+**/.settings
+
+# ignore jrebel related files
+**/rebel.xml
+**/rebel-remote.xml
+
+build.sh
+
+.vagrant
+
+*~
