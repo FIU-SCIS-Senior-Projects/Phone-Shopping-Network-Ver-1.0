@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/accept_tnc"
+    android:orientation="vertical">
+    <WebView android:id="@+id/tnc_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></WebView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <Button android:id="@+id/tnc_accept_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tnc_accept"
+            android:background="@color/colorYes"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tnc_reject"
+            android:background="@color/colorNo"
+            android:id="@+id/tnc_reject_btn" />
+    </LinearLayout>
+</LinearLayout>
