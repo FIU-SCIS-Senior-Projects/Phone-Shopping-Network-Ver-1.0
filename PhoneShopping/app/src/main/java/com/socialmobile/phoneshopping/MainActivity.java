@@ -1,7 +1,7 @@
 package com.socialmobile.phoneshopping;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +15,7 @@ import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public class MainActivity extends AppCompatActivity implements TNCFragment.ActionListener {
+public class MainActivity extends FragmentActivity implements TNCFragment.ActionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
