@@ -6,7 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
+
+import com.socialmobile.phoneshopping.R;
 
 /**
  *
@@ -40,14 +43,17 @@ public class TNCFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(android.R.layout.accept_tnc, container, false);
+        return inflater.inflate(R.layout.accept_tnc, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button acceptButton = getActivity().findViewById(android.R.id.tnc_accept_btn);
+        WebView tncView = (WebView) view.findViewById(R.id.tnc_web_view);
+        tncView.loadUrl("http://www.google.com");
+
+        Button acceptButton = (Button) view.findViewById(R.id.tnc_accept_btn);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +61,7 @@ public class TNCFragment extends Fragment {
             }
         });
 
-        Button rejectButton = getActivity().findViewById(android.R.id.tnc_reject_btn);
+        Button rejectButton = (Button) view.findViewById(R.id.tnc_reject_btn);
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
