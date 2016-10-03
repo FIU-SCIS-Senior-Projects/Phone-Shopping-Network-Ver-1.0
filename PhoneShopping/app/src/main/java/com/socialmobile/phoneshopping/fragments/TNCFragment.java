@@ -18,6 +18,17 @@ import com.socialmobile.phoneshopping.R;
  * @version $Revision: $ $Date: $
  */
 public class TNCFragment extends Fragment {
+    private static String data = "<html>\n" +
+            "<head>\n" +
+            "<title>Phone Shopping</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "<div style=\"max-width: 400px; margin: 10 auto;\">\n" +
+            "    <h1 style=\"width: 100%; margin: 20px 0 40px 0;\"><span style=\"margin: 0 auto;\">Phone Shopping App</span></h1>\n" +
+            "    <div>To use this application you mucs accept the <a href=\"#\">terms and conditions</a> and <a href=\"#\">privacy policy</a> of <b>Social Mobile USA</b></div>\n" +
+            "</div>\n" +
+            "</body>\n" +
+            "</html>";
 
     private ActionListener mCallback;
 
@@ -51,7 +62,8 @@ public class TNCFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         WebView tncView = (WebView) view.findViewById(R.id.tnc_web_view);
-        tncView.loadUrl("http://www.google.com");
+        tncView.loadData(data, "text/html", "UTF-8");
+//        tncView.loadUrl("http://www.google.com");
 
         Button acceptButton = (Button) view.findViewById(R.id.tnc_accept_btn);
         acceptButton.setOnClickListener(new View.OnClickListener() {
