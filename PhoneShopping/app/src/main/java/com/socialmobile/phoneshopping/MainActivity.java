@@ -25,18 +25,18 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         if (isLaunchedForTheFirstTime()) {
             TNCFragment fragment = new TNCFragment();
             fragment.setCallback(this);
-            getSupportFragmentManager().beginTransaction().add(fragment, "tnc").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "tnc").commit();
         }
         else {
             if (isRegisteredUser()) {
                 UserRegistrationFragment fragment = new UserRegistrationFragment();
 //                TODO:: initialize the fragment;
-                getSupportFragmentManager().beginTransaction().add(fragment, "registration").commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "registration").commit();
             }
             else {
                 AdDetailsFragment fragment = new AdDetailsFragment();
 //                TODO:: initialize the fragment;
-                getSupportFragmentManager().beginTransaction().add(fragment, "showAdDetails").commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "showAdDetails").commit();
             }
         }
     }
