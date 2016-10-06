@@ -2,7 +2,6 @@ package com.socialmobile.phoneshopping.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.socialmobile.phoneshopping.R;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public class TNCFragment extends Fragment {
+public class TNCFragment extends FragmentBase<TNCFragment.TNCResult> {
     private static String data = "<html>\n" +
             "<head>\n" +
             "<title>Phone Shopping</title>\n" +
@@ -30,23 +29,9 @@ public class TNCFragment extends Fragment {
             "</body>\n" +
             "</html>";
 
-    private ActionListener mCallback;
-
-    public enum AcceptTNCResult {
+    public enum TNCResult {
         ACCEPT,
         REJECT
-    }
-
-    public interface ActionListener {
-        void onTNCActionPerformed(final AcceptTNCResult pResult);
-    }
-
-    public ActionListener getCallback() {
-        return mCallback;
-    }
-
-    public void setCallback(ActionListener mCallback) {
-        this.mCallback = mCallback;
     }
 
     @Nullable
@@ -69,7 +54,7 @@ public class TNCFragment extends Fragment {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onTNCActionPerformed(AcceptTNCResult.ACCEPT);
+                sendActionResult(TNCResult.ACCEPT);
             }
         });
 
@@ -77,7 +62,7 @@ public class TNCFragment extends Fragment {
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onTNCActionPerformed(AcceptTNCResult.REJECT);
+                sendActionResult(TNCResult.REJECT);
             }
         });
     }

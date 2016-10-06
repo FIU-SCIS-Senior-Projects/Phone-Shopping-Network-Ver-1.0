@@ -9,5 +9,5 @@ import android.support.v4.app.Fragment;
  * @version $Revision: $ $Date: $
  */
 
-public class AdDetailsFragment extends Fragment {
+public class AdDetailsFragment extends FragmentBase<Object> {
 }

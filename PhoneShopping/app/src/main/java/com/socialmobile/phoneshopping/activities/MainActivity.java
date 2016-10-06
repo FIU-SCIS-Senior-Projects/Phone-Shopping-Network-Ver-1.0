@@ -7,8 +7,10 @@ import android.view.MenuItem;
 
 import com.socialmobile.phoneshopping.R;
 import com.socialmobile.phoneshopping.fragments.AdDetailsFragment;
+import com.socialmobile.phoneshopping.fragments.FragmentBase;
 import com.socialmobile.phoneshopping.fragments.TNCFragment;
 import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
+import com.socialmobile.phoneshopping.model.ActionResult;
 
 /**
  *
@@ -17,29 +19,56 @@ import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
  * @version $Revision: $ $Date: $
  */
 public class MainActivity extends FragmentActivity implements TNCFragment.ActionListener {
+    private static final int TNCAction = 100;
+    private static final int AdDetailsAction = 200;
+    private static final int RegistrationAction = 300;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FragmentBase fragmentBase = getLandingFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragmentBase).commit();
+
+    }
+
+    private FragmentBase getLandingFragment() {
+        FragmentBase fragmentBase;
         if (isLaunchedForTheFirstTime()) {
-            TNCFragment fragment = new TNCFragment();
-            fragment.setCallback(this);
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "tnc").commit();
+            fragmentBase = getragmentForTNC();
         }
         else {
             if (isRegisteredUser()) {
-                UserRegistrationFragment fragment = new UserRegistrationFragment();
-//                TODO:: initialize the fragment;
-                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "registration").commit();
+                fragmentBase = getFragmentForAdDetails();
             }
             else {
-                AdDetailsFragment fragment = new AdDetailsFragment();
-//                TODO:: initialize the fragment;
-                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragment, "showAdDetails").commit();
+                fragmentBase = getFragmentForUserRegistration();
             }
         }
+
+        return fragmentBase;
+    }
+
+    private TNCFragment getragmentForTNC() {
+        TNCFragment fragment = new TNCFragment();
+        fragment.setActionCallback(TNCAction, this);
+
+        return fragment;
+    }
+
+    private AdDetailsFragment getFragmentForAdDetails() {
+        AdDetailsFragment fragment = new AdDetailsFragment();
+        fragment.setActionCallback(AdDetailsAction, this);
+
+        return fragment;
+    }
+
+    private UserRegistrationFragment getFragmentForUserRegistration() {
+        UserRegistrationFragment fragment = new UserRegistrationFragment();
+        fragment.setActionCallback(RegistrationAction, this);
+
+        return fragment;
     }
 
     private boolean isLaunchedForTheFirstTime() {
@@ -75,7 +104,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
     }
 
     @Override
-    public void onTNCActionPerformed(TNCFragment.AcceptTNCResult pResult) {
-        System.out.println("TNC Action Performed: "+pResult);
+    public void onActionPerformed(int pId, ActionResult pResult) {
+
     }
 }
