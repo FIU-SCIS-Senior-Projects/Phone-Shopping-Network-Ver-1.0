@@ -1,10 +1,11 @@
-package com.socialmobile.phoneshopping;
+package com.socialmobile.phoneshopping.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.socialmobile.phoneshopping.R;
 import com.socialmobile.phoneshopping.fragments.AdDetailsFragment;
 import com.socialmobile.phoneshopping.fragments.TNCFragment;
 import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
