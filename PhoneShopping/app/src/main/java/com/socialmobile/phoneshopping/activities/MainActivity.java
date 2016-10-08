@@ -1,10 +1,13 @@
 package com.socialmobile.phoneshopping.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.socialmobile.phoneshopping.AppUtil;
 import com.socialmobile.phoneshopping.R;
 import com.socialmobile.phoneshopping.fragments.AdDetailsFragment;
 import com.socialmobile.phoneshopping.fragments.FragmentBase;
@@ -72,8 +75,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
     }
 
     private boolean isLaunchedForTheFirstTime() {
-//        TODO:: implement proper way to store and retrieve something to determine the first time.
-        return true;
+        return AppUtil.isLaunchedForTheFirstTime(this);
     }
 
     @Override
@@ -100,11 +102,48 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
 
     public boolean isRegisteredUser() {
 //        TODO:: add proper implementation to determine if the user is registered
-        return false;
+        return AppUtil.isUserAlreadyRegistered();
     }
 
     @Override
     public void onActionPerformed(int pId, ActionResult pResult) {
+        if (pId == TNCAction) {
+            onTNCActionPerformed((TNCFragment.TNCResult)pResult.get());
+        }
+        else if (pId == RegistrationAction) {
+//            TODO: the user just put his information and hit the register button. Make necessary changes to persist user information and trigger next view.
+        }
+        else if (pId == AdDetailsAction) {
+//         TODO: Show what
+        }
+        System.out.println("ACTOIN PERFORMED:: "+pResult.get());
+    }
 
+    private void onTNCActionPerformed(final TNCFragment.TNCResult pResult) {
+        if (pResult != TNCFragment.TNCResult.NONE) {
+            boolean oldValue = AppUtil.isAcceptedTNC(this);
+            boolean newValue = pResult == TNCFragment.TNCResult.ACCEPT;
+            if (oldValue != newValue) {
+                AppUtil.storeAcceptanceOfTNC(newValue, this);
+            }
+        }
+
+        Fragment fragment = getPreviousFragment();
+        if (fragment == null) {
+            fragment = getLandingFragment();
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+    }
+
+    private Fragment getPreviousFragment() {
+        int index = getFragmentManager().getBackStackEntryCount() - 1;
+        Fragment fragment = null;
+        if (index >= 0) {
+            FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
+            String tag = backEntry.getName();
+            fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        }
+
+        return fragment;
     }
 }

@@ -16,6 +16,7 @@ public final class AppUtil {
     public static final String PREFS_STORE = "csm.phoneshopping.prefs";
     public static final String TNC_ACCEPTANCE_KEY = "tnc.accepted";
     public static final String FIRST_TIME_LAUNCH_KEY = "never.launched.before";
+    private static final String USER_REGISTERED_KEY = "user.registered";
 
     public static boolean isAcceptedTNC(final Activity pCurrentActivity) {
         SharedPreferences settings = pCurrentActivity.getSharedPreferences(PREFS_STORE, 0);
@@ -34,6 +35,17 @@ public final class AppUtil {
         if (settings.contains(TNC_ACCEPTANCE_KEY)) {
             return false;
         }
+        return true;
+    }
+
+    public static boolean isUserAlreadyRegistered(final Activity activity) {
+//        SharedPreferences settings = activity.getSharedPreferences(PREFS_STORE, 0);
+//        if (settings.contains(USER_REGISTERED_KEY)) {
+//            return true;
+//        }
+//        return false;
+
+//        Fix-Me:: remember to remove the following line and enable the previous lines or provide a better implementation
         return true;
     }
 }

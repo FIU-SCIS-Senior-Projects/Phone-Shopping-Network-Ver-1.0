@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PhoneShopping</string>
     <string name="action_settings">Settings</string>
-    <string name="tnc_accept">Accept</string>
-    <string name="tnc_reject">Reject</string>
+    <string name="tnc_accept">Okay</string>
+    <string name="tnc_reject">Cancel</string>
+    <string name="tnc_consent">I accept the terms and conditions and the privacy policy.</string>
 </resources>

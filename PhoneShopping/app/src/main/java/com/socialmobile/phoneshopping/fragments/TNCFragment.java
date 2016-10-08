@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.CheckBox;
 
+import com.socialmobile.phoneshopping.AppUtil;
 import com.socialmobile.phoneshopping.R;
 
 /**
@@ -24,15 +26,22 @@ public class TNCFragment extends FragmentBase<TNCFragment.TNCResult> {
             "<body>\n" +
             "<div style=\"max-width: 400px; margin: 10 auto;\">\n" +
             "    <h1 style=\"width: 100%; margin: 20px 0 40px 0;\"><span style=\"margin: 0 auto;\">Phone Shopping App</span></h1>\n" +
-            "    <div>To use this application you mucs accept the <a href=\"#\">terms and conditions</a> and <a href=\"#\">privacy policy</a> of <b>Social Mobile USA</b></div>\n" +
+            "    <div>To use this application you must accept the <a href=\"#\">terms and conditions</a> and <a href=\"#\">privacy policy</a> of <b>Social Mobile USA</b></div>\n" +
             "</div>\n" +
             "</body>\n" +
             "</html>";
 
     public enum TNCResult {
         ACCEPT,
-        REJECT
+        REJECT,
+        NONE
     }
+
+    private WebView mTncWebview;
+    private CheckBox mCheckbox;
+    private Button mOkayButton;
+    private Button mCancelButton;
+
 
     @Nullable
     @Override
@@ -50,19 +59,34 @@ public class TNCFragment extends FragmentBase<TNCFragment.TNCResult> {
         tncView.loadData(data, "text/html", "UTF-8");
 //        tncView.loadUrl("http://www.google.com");
 
-        Button acceptButton = (Button) view.findViewById(R.id.tnc_accept_btn);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
+        mCheckbox = (CheckBox) view.findViewById(R.id.accept_tnc_check_box);
+        mCheckbox.setChecked(AppUtil.isAcceptedTNC(getActivity()));
+        mCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendActionResult(TNCResult.ACCEPT);
+                mOkayButton.setEnabled(!mOkayButton.isEnabled());
             }
         });
 
-        Button rejectButton = (Button) view.findViewById(R.id.tnc_reject_btn);
-        rejectButton.setOnClickListener(new View.OnClickListener() {
+        mOkayButton = (Button) view.findViewById(R.id.tnc_accept_btn);
+        mOkayButton.setEnabled(false);
+        mOkayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendActionResult(TNCResult.REJECT);
+                if (mCheckbox.isChecked()) {
+                    sendActionResult(TNCResult.ACCEPT);
+                }
+                else {
+                    sendActionResult(TNCResult.REJECT);
+                }
+            }
+        });
+
+        mCancelButton = (Button) view.findViewById(R.id.tnc_reject_btn);
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendActionResult(TNCResult.NONE);
             }
         });
     }
