@@ -26,7 +26,7 @@ public final class AppUtil {
     public static void storeAcceptanceOfTNC(final boolean pAccept, final Activity pActivity) {
         SharedPreferences settings = pActivity.getSharedPreferences(PREFS_STORE, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(TNC_ACCEPTANCE_KEY, String.valueOf(pAccept));
+        editor.putBoolean(TNC_ACCEPTANCE_KEY, pAccept);
         editor.commit();
     }
 
