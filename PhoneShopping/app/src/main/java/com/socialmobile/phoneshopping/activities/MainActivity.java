@@ -96,6 +96,15 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_show_tnc) {
+            getSupportFragmentManager().popBackStack();
+            FragmentBase fragmentBase = getragmentForTNC();
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack("action_show_tnc")
+                    .replace(R.id.frame_container, fragmentBase)
+                    .commit();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
