@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
 
     public boolean isRegisteredUser() {
 //        TODO:: add proper implementation to determine if the user is registered
-        return AppUtil.isUserAlreadyRegistered();
+        return AppUtil.isUserAlreadyRegistered(this);
     }
 
     @Override
