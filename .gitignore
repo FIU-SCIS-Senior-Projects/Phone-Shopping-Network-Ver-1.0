@@ -11,6 +11,7 @@
 **/overlays
 **/dependency-reduced-pom.xml
 **/bin
+**/classes
 
 # ignore eclipse related settings
 **/.classpath
@@ -26,3 +27,6 @@ build.sh
 .vagrant
 
 *~
+
+.gradle
+
