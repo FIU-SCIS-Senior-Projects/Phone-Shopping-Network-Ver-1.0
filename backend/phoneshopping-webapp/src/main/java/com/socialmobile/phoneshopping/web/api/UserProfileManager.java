@@ -1,5 +1,6 @@
 package com.socialmobile.phoneshopping.web.api;
 
+import com.socialmobile.phoneshopping.web.dao.UserProfileDAO;
 import com.socialmobile.phoneshopping.web.service.UserProfileService;
 import sun.plugin.util.UserProfile;
 
@@ -11,28 +12,38 @@ import java.util.Optional;
  * @version $Revision: $ $Date: $
  */
 public class UserProfileManager implements UserProfileService {
+    private UserProfileDAO mUserProfileDAO;
+
+    public UserProfileDAO getUserProfileDAO() {
+        return mUserProfileDAO;
+    }
+
+    public void setUserProfileDAO(final UserProfileDAO pUserProfileDAO) {
+        mUserProfileDAO = pUserProfileDAO;
+    }
+
     @Override
     public boolean exists(final String pIdToCheck) {
-        return false;
+        return mUserProfileDAO.exists(pIdToCheck);
     }
 
     @Override
     public UserProfile get(final String pIdToGet) {
-        return null;
+        return mUserProfileDAO.get(pIdToGet);
     }
 
     @Override
     public UserProfile create(final Optional<UserProfile> pObjectToCreate) {
-        return null;
+        return mUserProfileDAO.create(pObjectToCreate);
     }
 
     @Override
     public UserProfile update(final String pTargetObjectId, final Optional<UserProfile> pUpdateWith) {
-        return null;
+        return mUserProfileDAO.update(pTargetObjectId, pUpdateWith);
     }
 
     @Override
     public boolean delete(final String pIdToDelete) {
-        return false;
+        return mUserProfileDAO.delete(pIdToDelete);
     }
 }
