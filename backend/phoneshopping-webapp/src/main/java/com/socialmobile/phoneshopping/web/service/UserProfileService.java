@@ -1,6 +1,6 @@
 package com.socialmobile.phoneshopping.web.service;
 
-import sun.plugin.util.UserProfile;
+import com.socialmobile.common.model.UserProfile;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>

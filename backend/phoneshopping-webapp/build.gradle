@@ -14,6 +14,7 @@ ext {
 
 dependencies {
     compile (
+            project(":common"),
             [group:"org.glassfish.jersey.containers", name:"jersey-container-servlet", version:jersey_version],
             [group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version],
             [group:"org.glassfish.jersey.media", name:"jersey-media-json-jackson", version:jersey_version]

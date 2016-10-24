@@ -1,8 +1,8 @@
 package com.socialmobile.phoneshopping.web.api;
 
+import com.socialmobile.common.model.UserProfile;
 import com.socialmobile.phoneshopping.web.dao.UserProfileDAO;
 import com.socialmobile.phoneshopping.web.service.UserProfileService;
-import sun.plugin.util.UserProfile;
 
 import java.util.Optional;
 
