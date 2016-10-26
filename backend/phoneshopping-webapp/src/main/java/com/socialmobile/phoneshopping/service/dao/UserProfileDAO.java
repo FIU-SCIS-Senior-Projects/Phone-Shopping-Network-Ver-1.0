@@ -1,6 +1,6 @@
-package com.socialmobile.phoneshopping.web.dao;
+package com.socialmobile.phoneshopping.service.dao;
 
-import com.socialmobile.phoneshopping.web.service.UserProfileService;
+import com.socialmobile.phoneshopping.service.UserProfileService;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>

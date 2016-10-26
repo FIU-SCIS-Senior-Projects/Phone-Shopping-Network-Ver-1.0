@@ -1,7 +1,9 @@
-package com.socialmobile.phoneshopping.web.resources;
+package com.socialmobile.phoneshopping.service.resources;
 
 import com.socialmobile.common.model.UserProfile;
-import com.socialmobile.phoneshopping.web.service.UserProfileService;
+import com.socialmobile.phoneshopping.service.UserProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -1,4 +1,4 @@
-package com.socialmobile.phoneshopping.web.dao;
+package com.socialmobile.phoneshopping.service.dao;
 
 import com.socialmobile.common.model.UserProfile;
 

@@ -1,4 +1,4 @@
-package com.socialmobile.phoneshopping.web.service;
+package com.socialmobile.phoneshopping.service;
 
 import java.util.Optional;
 

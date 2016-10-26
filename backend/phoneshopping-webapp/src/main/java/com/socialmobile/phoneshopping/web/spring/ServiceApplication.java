@@ -9,6 +9,6 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 public class ServiceApplication extends ResourceConfig {
     public ServiceApplication() {
-        packages(true, "com.socialmobile.phoneshopping.web.resources");
+        packages(true, "com.socialmobile.phoneshopping.service.resources");
     }
 }
