@@ -79,11 +79,15 @@ public class UserProfileServiceResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{name}")
-    public Response updateUser(final @PathParam("name") String pUsername, final UserProfile pUserProfile) {
+    public Response updateUser(final @PathParam("name") String pUsername, final UserProfile pUserProfile) throws JsonProcessingException {
         Optional<UserProfile> profile = Optional.of(pUserProfile);
         UserProfile userProfile = userProfileService.update(pUsername, profile);
+        if (userProfile == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .build();
+        }
         return Response.status(Response.Status.OK)
-                .entity(userProfile)
+                .entity(JSONObjectFactory.getsInstance().objectToString(userProfile))
                 .build();
 
     }

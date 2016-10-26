@@ -2,6 +2,7 @@ package com.socialmobile.phoneshopping.service.dao;
 
 import com.socialmobile.common.model.UserProfile;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -10,57 +11,51 @@ import java.util.Optional;
  * @version $Revision: $ $Date: $
  */
 public class DummyuserProfileDAO implements UserProfileDAO {
-    private UserProfile user = new UserProfile() {{
-       setFirstName("First");
-        setLastName("Last");
-        setEmail("first.last@example.com");
-        setPhone("+18889990000");
-        setUsername("first.last");
-    }};
+
+    private final HashMap<String, UserProfile> mUsersMap = new HashMap<>();
 
     @Override
     public boolean exists(final String pIdToCheck) {
-        return user.getUsername().equals(pIdToCheck);
+        return mUsersMap.containsKey(pIdToCheck);
     }
 
     @Override
     public UserProfile get(final String pIdToGet) {
-        if (user.getUsername().equals(pIdToGet)) {
-            return user;
-        }
-
-        return null;
+        return mUsersMap.get(pIdToGet);
     }
 
     @Override
     public UserProfile create(final Optional<UserProfile> pObjectToCreate) {
-        if (user.getUsername().length() == 0) {
-            user = pObjectToCreate.get();
-        }
-
-        return user;
+        UserProfile profile = pObjectToCreate.get();
+        mUsersMap.put(profile.getUsername(), profile);
+        return profile;
     }
 
     @Override
     public UserProfile update(final String pTargetObjectId, final Optional<UserProfile> pUpdateWith) {
-        if (user.getUsername().equals(pTargetObjectId)) {
-            UserProfile with = pUpdateWith.get();
-            user.setFirstName(with.getFirstName());
-            user.setLastName(with.getLastName());
-            user.setPhone(with.getPhone());
-            user.setEmail(with.getEmail());
-
-            return user;
+        UserProfile oldProfile = mUsersMap.get(pTargetObjectId);
+        if (oldProfile == null) {
+            return null;
         }
+        else {
+            UserProfile newProfile = pUpdateWith.get();
+            UserProfile profile = new UserProfile();
+            profile.setUsername(pTargetObjectId);
+            profile.setFirstName(newProfile.getFirstName());
+            profile.setLastName(newProfile.getLastName());
+            profile.setEmail(newProfile.getEmail());
+            profile.setPhone(newProfile.getPhone());
+            mUsersMap.put(pTargetObjectId, profile);
 
-        return null;
+            return profile;
+        }
     }
 
     @Override
     public boolean delete(final String pIdToDelete) {
-        if (user.getUsername().equals(pIdToDelete)) {
-            user.setUsername("");
-            return true;
+        UserProfile profile = mUsersMap.get(pIdToDelete);
+        if (mUsersMap.containsKey(pIdToDelete)) {
+            return mUsersMap.remove(pIdToDelete, mUsersMap.get(pIdToDelete));
         }
 
         return false;
