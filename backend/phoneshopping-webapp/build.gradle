@@ -11,14 +11,23 @@ repositories {
 
 ext {
     jersey_version = '2.23.2'
+    spring_version = '4.1.0.RELEASE'
 }
 
 dependencies {
     compile (
             project(":common"),
             [group:"org.glassfish.jersey.containers", name:"jersey-container-servlet", version:jersey_version],
-            [group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version],
             [group:"org.glassfish.jersey.media", name:"jersey-media-json-jackson", version:jersey_version],
+            [group:"org.springframework", name:"spring-core", version:spring_version],
+            [group:"org.springframework", name:"spring-beans", version:spring_version],
+            [group:"org.springframework", name:"spring-web", version:spring_version]
+    )
+    compile([group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version]) {
+        exclude group:"org.springframework"
+    }
+    compile (
+
     )
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
