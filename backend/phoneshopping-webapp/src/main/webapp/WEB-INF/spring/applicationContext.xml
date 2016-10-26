@@ -10,4 +10,17 @@
         http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
     <context:annotation-config />
+
+    <bean id="userProfileDAO" class="com.socialmobile.phoneshopping.service.dao.DummyuserProfileDAO"/>
+
+    <bean id="userProfileService" class="com.socialmobile.phoneshopping.service.api.UserProfileManager">
+        <property name="userProfileDAO" ref="userProfileDAO"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <!--<bean id="userProfileServiceResource"  class="com.socialmobile.phoneshopping.service.resources.UserProfileServiceResource">-->
+        <!--<property name="userProfileService" ref="userProfileService"/>-->
+    <!--</bean>-->
+
 </beans>

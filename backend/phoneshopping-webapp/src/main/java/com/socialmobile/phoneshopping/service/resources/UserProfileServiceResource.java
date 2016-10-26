@@ -1,9 +1,10 @@
 package com.socialmobile.phoneshopping.service.resources;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.socialmobile.common.json.JSONObjectFactory;
 import com.socialmobile.common.model.UserProfile;
 import com.socialmobile.phoneshopping.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -19,20 +20,25 @@ import java.util.Optional;
 @Path("user")
 public class UserProfileServiceResource {
 
-    private UserProfileService mUserProfileService;
+    @Autowired
+    private UserProfileService userProfileService;
 
     public UserProfileService getUserProfileService() {
-        return mUserProfileService;
+        return userProfileService;
     }
 
     public void setUserProfileService(final UserProfileService pUserProfileService) {
-        mUserProfileService = pUserProfileService;
+        userProfileService = pUserProfileService;
+    }
+
+    public UserProfileServiceResource() {
+        System.out.println("userProfileServiceResource is being initialized ");
     }
 
     @HEAD
     @Path("/{name}")
     public Response existsUser(final @PathParam("name") String pUsername) {
-        boolean exists = mUserProfileService.exists(pUsername);
+        boolean exists = userProfileService.exists(pUsername);
         Response.Status status = exists ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).build();
     }
@@ -40,17 +46,21 @@ public class UserProfileServiceResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{name}")
-    public Response getUser(final @PathParam("name") String pUsername) {
-        UserProfile userProfile = mUserProfileService.get(pUsername);
+    public Response getUser(final @PathParam("name") String pUsername) throws JsonProcessingException {
+        UserProfile userProfile = userProfileService.get(pUsername);
+        if (userProfile == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
         return Response.status(Response.Status.OK)
-                .entity(userProfile)
+                .entity(JSONObjectFactory.getsInstance().objectToString(userProfile))
                 .build();
     }
 
     @DELETE
     @Path("/{name}")
     public Response deleteUser(final @PathParam("name") String pUsername) {
-        boolean deleted = mUserProfileService.delete(pUsername);
+        boolean deleted = userProfileService.delete(pUsername);
         Response.Status status = deleted ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).build();
     }
@@ -59,7 +69,7 @@ public class UserProfileServiceResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(final UserProfile pUserProfile) {
         Optional<UserProfile> profile = Optional.of(pUserProfile);
-        UserProfile userProfile = mUserProfileService.create(profile);
+        UserProfile userProfile = userProfileService.create(profile);
         return Response.status(Response.Status.CREATED)
                 .build();
 
@@ -71,7 +81,7 @@ public class UserProfileServiceResource {
     @Path("/{name}")
     public Response updateUser(final @PathParam("name") String pUsername, final UserProfile pUserProfile) {
         Optional<UserProfile> profile = Optional.of(pUserProfile);
-        UserProfile userProfile = mUserProfileService.update(pUsername, profile);
+        UserProfile userProfile = userProfileService.update(pUsername, profile);
         return Response.status(Response.Status.OK)
                 .entity(userProfile)
                 .build();
