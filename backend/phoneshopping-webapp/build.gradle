@@ -17,11 +17,13 @@ ext {
 dependencies {
     compile (
             project(":common"),
-            [group:"org.glassfish.jersey.containers", name:"jersey-container-servlet", version:jersey_version],
-            [group:"org.glassfish.jersey.media", name:"jersey-media-json-jackson", version:jersey_version],
-            [group:"org.springframework", name:"spring-core", version:spring_version],
-            [group:"org.springframework", name:"spring-beans", version:spring_version],
-            [group:"org.springframework", name:"spring-web", version:spring_version]
+            [group:"org.glassfish.jersey.containers", name:"jersey-container-servlet",  version:jersey_version],
+            [group:"org.glassfish.jersey.media",      name:"jersey-media-json-jackson", version:jersey_version],
+            [group:"org.springframework",             name:"spring-core",               version:spring_version],
+            [group:"org.springframework",             name:"spring-beans",              version:spring_version],
+            [group:"org.springframework",             name:"spring-web",                version:spring_version],
+            [group:"org.hibernate",                   name:"hibernate-core",            version:"5.2.3.Final"],
+            [group:"org.hibernate",                   name:"hibernate-annotations",     version:"3.5.6-Final"]
     )
     compile([group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version]) {
         exclude group:"org.springframework"
