@@ -3,7 +3,7 @@ package com.socialmobile.phoneshopping.service.resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.socialmobile.common.json.JSONObjectFactory;
 import com.socialmobile.common.model.UserProfile;
-import com.socialmobile.phoneshopping.service.UserProfileService;
+import com.socialmobile.phoneshopping.service.api.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;

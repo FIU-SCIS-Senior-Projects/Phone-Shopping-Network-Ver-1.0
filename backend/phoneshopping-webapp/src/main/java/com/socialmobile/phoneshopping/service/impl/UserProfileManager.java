@@ -1,9 +1,8 @@
-package com.socialmobile.phoneshopping.service.api;
+package com.socialmobile.phoneshopping.service.impl;
 
 import com.socialmobile.common.model.UserProfile;
+import com.socialmobile.phoneshopping.service.api.UserProfileService;
 import com.socialmobile.phoneshopping.service.dao.UserProfileDAO;
-import com.socialmobile.phoneshopping.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 

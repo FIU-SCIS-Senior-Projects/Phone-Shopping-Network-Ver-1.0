@@ -13,7 +13,7 @@
 
     <bean id="userProfileDAO" class="com.socialmobile.phoneshopping.service.dao.DummyuserProfileDAO"/>
 
-    <bean id="userProfileService" class="com.socialmobile.phoneshopping.service.api.UserProfileManager">
+    <bean id="userProfileService" class="com.socialmobile.phoneshopping.service.impl.UserProfileManager">
         <property name="userProfileDAO" ref="userProfileDAO"/>
     </bean>
 

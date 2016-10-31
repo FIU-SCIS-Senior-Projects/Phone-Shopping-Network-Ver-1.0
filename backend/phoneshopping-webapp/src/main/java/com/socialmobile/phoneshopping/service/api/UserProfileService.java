@@ -1,4 +1,4 @@
-package com.socialmobile.phoneshopping.service;
+package com.socialmobile.phoneshopping.service.api;
 
 import com.socialmobile.common.model.UserProfile;
 
