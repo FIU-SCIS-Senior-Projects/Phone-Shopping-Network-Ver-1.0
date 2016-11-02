@@ -15,6 +15,8 @@ import com.socialmobile.phoneshopping.fragments.TNCFragment;
 import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
 import com.socialmobile.phoneshopping.model.ActionResult;
 
+import java.util.HashMap;
+
 /**
  *
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -31,7 +33,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentBase fragmentBase = getLandingFragment();
+        FragmentBase fragmentBase =  getFragmentForUserRegistration(); /*getLandingFragment();*/
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragmentBase).commit();
 
     }
@@ -120,7 +122,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
             onTNCActionPerformed((TNCFragment.TNCResult)pResult.get());
         }
         else if (pId == RegistrationAction) {
-//            TODO: the user just put his information and hit the register button. Make necessary changes to persist user information and trigger next view.
+              onRegistrationActionPerformed ((HashMap<String, String>) pResult.get());
         }
         else if (pId == AdDetailsAction) {
 //         TODO: Show what
@@ -128,6 +130,11 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         System.out.println("ACTOIN PERFORMED:: "+pResult.get());
     }
 
+    private void onRegistrationActionPerformed(final HashMap<String, String> pResult){
+        System.out.println("FIRSTNAME: "+pResult.get("firstname"));
+        System.out.println("LASTNAME: "+pResult.get("lastname"));
+        System.out.println("EMAIL: "+pResult.get("email"));
+    }
     private void onTNCActionPerformed(final TNCFragment.TNCResult pResult) {
         if (pResult != TNCFragment.TNCResult.NONE) {
             boolean oldValue = AppUtil.isAcceptedTNC(this);
