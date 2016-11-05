@@ -7,5 +7,5 @@ import com.socialmobile.common.model.UserProfile;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public interface UserProfileService extends ServiceBase<UserProfile> {
+public interface UserProfileService extends ServiceBase<UserProfile, String> {
 }

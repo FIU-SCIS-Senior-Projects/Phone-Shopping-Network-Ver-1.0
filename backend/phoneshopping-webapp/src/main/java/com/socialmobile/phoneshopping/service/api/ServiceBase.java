@@ -1,5 +1,6 @@
 package com.socialmobile.phoneshopping.service.api;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -7,10 +8,10 @@ import java.util.Optional;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public interface ServiceBase<T> {
-    boolean exists(final String pIdToCheck);
-    T get(final String pIdToGet);
-    T create(final Optional<T> pObjectToCreate);
-    T update(final String pTargetObjectId, final Optional<T> pUpdateWith);
-    boolean delete(final String pIdToDelete);
+public interface ServiceBase<T, I extends Serializable> {
+    boolean exists(final I pIdToCheck);
+    T get(final I pIdToGet);
+    T create(final T pObjectToCreate);
+    T update(final I pTargetObjectId, final T pUpdateWith);
+    boolean delete(final I pIdToDelete);
 }
