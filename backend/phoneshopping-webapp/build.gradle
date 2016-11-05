@@ -13,7 +13,7 @@ repositories {
 
 ext {
     jersey_version = '2.23.2'
-    spring_version = '4.1.0.RELEASE'
+    spring_version = '4.3.3.RELEASE'
 }
 
 dependencies {
@@ -24,9 +24,16 @@ dependencies {
             [group:"org.springframework",             name:"spring-core",               version:spring_version],
             [group:"org.springframework",             name:"spring-beans",              version:spring_version],
             [group:"org.springframework",             name:"spring-web",                version:spring_version],
+            [group:"org.springframework",             name:"spring-orm",                version:spring_version],
             [group:"org.hibernate",                   name:"hibernate-core",            version:"5.2.3.Final"],
-            [group:"org.hibernate",                   name:"hibernate-annotations",     version:"3.5.6-Final"]
     )
+//    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.1.4.RELEASE'
+//    compile 'org.hibernate:hibernate-core:4.3.6.Final'
+//    compile 'javax.servlet:javax.servlet-api:3.1.0'
+//    compile 'org.slf4j:slf4j-simple:1.7.7'
+//    compile 'org.javassist:javassist:3.15.0-GA'
+    compile 'mysql:mysql-connector-java:5.1.31'
+    compile 'commons-dbcp:commons-dbcp:1.4'
     compile([group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version]) {
         exclude group:"org.springframework"
     }
