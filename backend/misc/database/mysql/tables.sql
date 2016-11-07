@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Product (
 -- -----------------------------------------------------
 -- Table Order
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS Order (
+CREATE TABLE IF NOT EXISTS Orders (
   orderNumber INT NOT NULL,
   orderStatus VARCHAR(10) NULL,
   PRIMARY KEY (orderNumber))
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS ProductOrder (
 CREATE TABLE IF NOT EXISTS AddressTypes (
   typeName VARCHAR(10) NOT NULL,
   displayName VARCHAR(45) NULL,
-  PRIMARY KEY (name))
+  PRIMARY KEY (typeName))
   ENGINE = InnoDB;
 
 

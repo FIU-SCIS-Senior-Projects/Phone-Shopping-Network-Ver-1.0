@@ -25,8 +25,9 @@ ALTER TABLE UserRoles
     FOREIGN KEY (userName)
     REFERENCES User (userName)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_user_role_role
+    ON UPDATE NO ACTION;
+ALTER TABLE UserRoles
+  ADD CONSTRAINT fk_user_role_role
     FOREIGN KEY (roleId)
     REFERENCES Roles (roleId)
     ON DELETE NO ACTION
@@ -37,20 +38,24 @@ ALTER TABLE OrderPlacement
     FOREIGN KEY (userName)
     REFERENCES User (userName)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_placed_order
+    ON UPDATE NO ACTION;
+
+ALTER TABLE OrderPlacement
+  ADD CONSTRAINT fk_placed_order
     FOREIGN KEY (orderNumber)
-    REFERENCES Order (orderNumber)
+    REFERENCES Orders (orderNumber)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
 
 ALTER TABLE ProductOrder
   ADD CONSTRAINT fk_product_order_order
     FOREIGN KEY (orderNumber)
-    REFERENCES Order (orderNumber)
+    REFERENCES Orders (orderNumber)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_product_order_product
+    ON UPDATE NO ACTION;
+
+ALTER TABLE ProductOrder
+  ADD CONSTRAINT fk_product_order_product
     FOREIGN KEY (productId)
     REFERENCES Product (productId)
     ON DELETE NO ACTION
@@ -61,13 +66,17 @@ ALTER TABLE UserAddress
     FOREIGN KEY (userName)
     REFERENCES User (userName)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_user_address_address
+    ON UPDATE NO ACTION;
+
+ALTER TABLE UserAddress
+  ADD CONSTRAINT fk_user_address_address
     FOREIGN KEY (addressId)
     REFERENCES Address (addressId)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_user_address_type
+    ON UPDATE NO ACTION;
+
+ALTER TABLE UserAddress
+  ADD CONSTRAINT fk_user_address_type
     FOREIGN KEY (typeName)
     REFERENCES AddressTypes (typeName)
     ON DELETE NO ACTION
@@ -76,15 +85,19 @@ ALTER TABLE UserAddress
 ALTER TABLE OrderAddress
   ADD CONSTRAINT fk_order_address_order
     FOREIGN KEY (orderNumber)
-    REFERENCES Order (orderNumber)
+    REFERENCES Orders (orderNumber)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_order_address_address
+    ON UPDATE NO ACTION;
+
+ALTER TABLE OrderAddress
+  ADD CONSTRAINT fk_order_address_address
     FOREIGN KEY (addressId)
     REFERENCES Address (addressId)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT fk_order_address_type
+    ON UPDATE NO ACTION;
+
+ALTER TABLE OrderAddress
+  ADD CONSTRAINT fk_order_address_type
     FOREIGN KEY (typeName)
     REFERENCES AddressTypes (typeName)
     ON DELETE NO ACTION
