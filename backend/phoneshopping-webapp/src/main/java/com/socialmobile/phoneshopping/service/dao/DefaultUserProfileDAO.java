@@ -1,6 +1,6 @@
 package com.socialmobile.phoneshopping.service.dao;
 
-import com.socialmobile.phoneshopping.service.api.RoleNames;
+import com.socialmobile.common.constants.RoleNames;
 import com.socialmobile.phoneshopping.service.domain.Roles;
 import com.socialmobile.phoneshopping.service.domain.User;
 import org.hibernate.query.NativeQuery;
