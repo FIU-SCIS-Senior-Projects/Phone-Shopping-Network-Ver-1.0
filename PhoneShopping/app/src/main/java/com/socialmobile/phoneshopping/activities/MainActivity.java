@@ -1,5 +1,6 @@
 package com.socialmobile.phoneshopping.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -7,7 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.socialmobile.common.json.JSONObjectFactory;
+import com.socialmobile.common.model.UserProfile;
 import com.socialmobile.phoneshopping.AppUtil;
+import com.socialmobile.phoneshopping.ContentManager;
 import com.socialmobile.phoneshopping.R;
 import com.socialmobile.phoneshopping.fragments.AdDetailsFragment;
 import com.socialmobile.phoneshopping.fragments.FragmentBase;
@@ -15,6 +20,7 @@ import com.socialmobile.phoneshopping.fragments.TNCFragment;
 import com.socialmobile.phoneshopping.fragments.UserRegistrationFragment;
 import com.socialmobile.phoneshopping.model.ActionResult;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -27,6 +33,8 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
     private static final int TNCAction = 100;
     private static final int AdDetailsAction = 200;
     private static final int RegistrationAction = 300;
+
+    private ContentManager mContentManager = ContentManager.instance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,16 +130,27 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
             onTNCActionPerformed((TNCFragment.TNCResult)pResult.get());
         }
         else if (pId == RegistrationAction) {
-              onRegistrationActionPerformed ((HashMap<String, String>) pResult.get());
+              onRegistrationActionPerformed ((UserProfile) pResult.get());
         }
         else if (pId == AdDetailsAction) {
 //         TODO: Show what
         }
     }
 
-    private void onRegistrationActionPerformed(final HashMap<String, String> pResult){
-//        TODO: communicate to server for registration
+    private void onRegistrationActionPerformed(final UserProfile pResult){
+        if (pResult != null) {
+            new RegistrationActionTask(pResult).execute();
+        }
     }
+
+    private void changeFragment() {
+        Fragment fragment = getPreviousFragment();
+        if (fragment == null) {
+            fragment = getLandingFragment();
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+    }
+
     private void onTNCActionPerformed(final TNCFragment.TNCResult pResult) {
         if (pResult != TNCFragment.TNCResult.NONE) {
             boolean oldValue = AppUtil.isAcceptedTNC(this);
@@ -141,11 +160,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
             }
         }
 
-        Fragment fragment = getPreviousFragment();
-        if (fragment == null) {
-            fragment = getLandingFragment();
-        }
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+        changeFragment();
     }
 
     private Fragment getPreviousFragment() {
@@ -159,4 +174,43 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
 
         return fragment;
     }
+
+    class RegistrationActionTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final UserProfile mUserProfile;
+        private String mErrorMessage = "";
+
+        public RegistrationActionTask(final UserProfile pProfile) {
+            mUserProfile = pProfile;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                mContentManager.registerUser(mUserProfile);
+                return true;
+            } catch (IOException e) {
+                mErrorMessage = e.getLocalizedMessage();
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (aBoolean == false || mErrorMessage != null || mErrorMessage.length() != 0)
+            {
+                System.out.println("ERROR:"+mErrorMessage);
+                //todo:: Show error messages
+            }
+            try {
+                AppUtil.setStringPreference(MainActivity.this, AppUtil.USER_REGISTERED_KEY, JSONObjectFactory.getsInstance().objectToString(mUserProfile));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            changeFragment();
+        }
+    }
+
 }
