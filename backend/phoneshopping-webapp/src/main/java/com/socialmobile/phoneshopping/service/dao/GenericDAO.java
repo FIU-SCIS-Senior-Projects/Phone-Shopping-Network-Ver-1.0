@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -16,15 +15,23 @@ import java.util.Optional;
  */
 public abstract class GenericDAO<T, I extends Serializable> implements ServiceBase<T,I> {
     @Autowired
-    private LocalSessionFactoryBean mSessionFactoryBean;
+    private LocalSessionFactoryBean sessionFactoryBean;
 
     protected SessionFactory getSessionFactory() {
-        return mSessionFactoryBean.getObject();
+        return sessionFactoryBean.getObject();
     }
+
     @Override
     public boolean exists(final I pIdToCheck) {
-        T object = getSessionFactory().getCurrentSession().get(getEntity(), pIdToCheck);
-        return object != null;
+        try {
+            T object = getSessionFactory().getCurrentSession().get(getEntity(), pIdToCheck);
+            return object != null;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
