@@ -33,7 +33,7 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentBase fragmentBase =  getFragmentForUserRegistration(); /*getLandingFragment();*/
+        FragmentBase fragmentBase =  getLandingFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container, fragmentBase).commit();
 
     }
@@ -127,13 +127,10 @@ public class MainActivity extends FragmentActivity implements TNCFragment.Action
         else if (pId == AdDetailsAction) {
 //         TODO: Show what
         }
-        System.out.println("ACTOIN PERFORMED:: "+pResult.get());
     }
 
     private void onRegistrationActionPerformed(final HashMap<String, String> pResult){
-        System.out.println("FIRSTNAME: "+pResult.get("firstname"));
-        System.out.println("LASTNAME: "+pResult.get("lastname"));
-        System.out.println("EMAIL: "+pResult.get("email"));
+//        TODO: communicate to server for registration
     }
     private void onTNCActionPerformed(final TNCFragment.TNCResult pResult) {
         if (pResult != TNCFragment.TNCResult.NONE) {
