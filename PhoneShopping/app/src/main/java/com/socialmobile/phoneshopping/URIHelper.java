@@ -14,17 +14,17 @@ package com.socialmobile.phoneshopping;
  * @version $Revision: $ $Date: $
  */
 public class URIHelper {
-    public static final String CONTENT_BASE_URL = "http://52.45.13.112:8080/phoneshopping-webapp/";
+    public static final String CONTENT_BASE_URL = "http://52.45.13.112:8080/phoneshopping-webapp";
 //    public static final String CONTENT_BASE_URL = "http://localhost:8080/phoneshopping-webapp/";
 
-    public static final String SERVICE_BASE_URL = CONTENT_BASE_URL + "service/";
+    public static final String SERVICE_BASE_URL = CONTENT_BASE_URL + "/service";
 
     /**
      * The base url for accessing the resource for user. It is suitable for POST request only.
      * @return The base url for accessing the resource for user.
      */
     public static String getUrlForUser() {
-        return String.format("%suser/", SERVICE_BASE_URL);
+        return String.format("%s/user", SERVICE_BASE_URL);
     }
 
     /**
@@ -34,6 +34,6 @@ public class URIHelper {
      * @return The suitable url for accessing the specific user.
      */
     public static String getUrlForUser(final String pUserName) {
-        return String.format("%s%s/", getUrlForUser(), pUserName);
+        return String.format("%s/%s", getUrlForUser(), pUserName);
     }
 }

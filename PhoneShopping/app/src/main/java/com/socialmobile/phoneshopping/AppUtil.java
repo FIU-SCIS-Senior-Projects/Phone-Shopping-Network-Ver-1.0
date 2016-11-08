@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 
 import com.socialmobile.phoneshopping.activities.MainActivity;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
  * @author last modified by $Author: $
@@ -16,7 +21,7 @@ public final class AppUtil {
     public static final String PREFS_STORE = "csm.phoneshopping.prefs";
     public static final String TNC_ACCEPTANCE_KEY = "tnc.accepted";
     public static final String FIRST_TIME_LAUNCH_KEY = "never.launched.before";
-    private static final String USER_REGISTERED_KEY = "user.registered";
+    public static final String USER_REGISTERED_KEY = "registered.user";
 
     public static boolean isAcceptedTNC(final Activity pCurrentActivity) {
         SharedPreferences settings = pCurrentActivity.getSharedPreferences(PREFS_STORE, 0);
@@ -39,13 +44,23 @@ public final class AppUtil {
     }
 
     public static boolean isUserAlreadyRegistered(final Activity activity) {
-//        SharedPreferences settings = activity.getSharedPreferences(PREFS_STORE, 0);
-//        if (settings.contains(USER_REGISTERED_KEY)) {
-//            return true;
-//        }
-//        return false;
 
-//        Fix-Me:: remember to remove the following line and enable the previous lines or provide a better implementation
-        return true;
+        SharedPreferences settings = activity.getSharedPreferences(PREFS_STORE, 0);
+        if (settings.contains(USER_REGISTERED_KEY)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String getPreferenceAsString(final Activity pActivity, final String pKey) {
+        SharedPreferences settings = pActivity.getSharedPreferences(PREFS_STORE, 0);
+        return settings.getString(pKey, "");
+    }
+
+    public static void setStringPreference(final Activity pActivity, final String pKey, final String pValue) {
+        SharedPreferences settings = pActivity.getSharedPreferences(PREFS_STORE, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(pKey, pValue);
+        editor.commit();
     }
 }
