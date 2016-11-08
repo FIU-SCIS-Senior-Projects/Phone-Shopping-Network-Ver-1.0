@@ -37,21 +37,19 @@ public class CommunicationManager {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public <T> T doGet(final String pUrl, final Class<T> pType) throws IOException {
-        HttpURLConnection connection = makeConnection(pUrl, "GET", 200, null);
-        try(InputStream inputStream = connection.getInputStream()) {
-            String responseString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            return JSONObjectFactory.getsInstance().stringToObject(responseString, pType);
-        }
+        String responseString = makeConnection(pUrl, "GET", 200, null);
+        return JSONObjectFactory.getsInstance().stringToObject(responseString, pType);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private HttpURLConnection makeConnection(final String pUrl, final String pMethod, int pExpectedReturnCode, final Object pObject) throws IOException {
+    private String makeConnection(final String pUrl, final String pMethod, int pExpectedReturnCode, final Object pInput) throws IOException {
         HttpURLConnection connection = initConnection(pUrl, pMethod);
 
-        if (pObject != null) {
+        connection.setDoInput(true);
+        if (pInput != null) {
             connection.setDoOutput(true);
             try(OutputStream outputStream = connection.getOutputStream()) {
-                writeData(outputStream, pObject);
+                writeData(outputStream, pInput);
             }
         }
 
@@ -63,24 +61,26 @@ public class CommunicationManager {
             throw new IOException(message);
         }
 
-        return connection;
+        String responseString = "";
+        try(InputStream inputStream = connection.getInputStream()) {
+            responseString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        }
+        finally {
+            connection.disconnect();
+        }
+
+        return responseString;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public <T> String doCreate(final String pUrl, final T pObject) throws IOException {
-        HttpURLConnection connection = makeConnection(pUrl, "POST", 201, pObject);
-        try(InputStream inputStream = connection.getInputStream()) {
-            return IOUtils.toString(inputStream, "UTF-8");
-        }
+        return makeConnection(pUrl, "POST", 201, pObject);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public <T> T doUpdate(final String pUrl, final T pObject) throws IOException {
-        HttpURLConnection connection = makeConnection(pUrl, "PUT", 200, pObject);
-        try(InputStream inputStream = connection.getInputStream()) {
-            String responseString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            return (T) JSONObjectFactory.getsInstance().stringToObject(responseString, pObject.getClass());
-        }
+        String responseString = makeConnection(pUrl, "PUT", 200, pObject);
+        return (T) JSONObjectFactory.getsInstance().stringToObject(responseString, pObject.getClass());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
