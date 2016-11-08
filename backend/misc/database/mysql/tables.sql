@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS User (
 -- Table Roles
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS Roles (
-  roleId INT NOT NULL,
+  roleId INT NOT NULL AUTO_INCREMENT,
   roleName VARCHAR(15) NOT NULL,
   description VARCHAR(45) NULL,
   PRIMARY KEY (roleId))
@@ -30,15 +30,14 @@ CREATE TABLE IF NOT EXISTS Roles (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS UserRoles (
   userName VARCHAR(30) NOT NULL,
-  roleId INT NOT NULL,
-  PRIMARY KEY (userName))
+  roleId INT NOT NULL)
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table Address
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS Address (
-  addressId INT NOT NULL,
+  addressId INT NOT NULL AUTO_INCREMENT,
   addressLineOne VARCHAR(45) NOT NULL,
   addressLineTwo VARCHAR(30) NULL,
   city VARCHAR(15) NULL,
@@ -51,7 +50,7 @@ CREATE TABLE IF NOT EXISTS Address (
 -- Table Product
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS Product (
-  productId INT NOT NULL,
+  productId INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(45) NULL,
   description VARCHAR(200) NULL,
   info VARCHAR(300) NULL,
