@@ -70,6 +70,7 @@ public class UserProfileServiceResource {
     public Response createUser(final UserProfile pUserProfile) {
         UserProfile userProfile = userProfileService.create(pUserProfile);
         return Response.status(Response.Status.CREATED)
+                .entity(userProfile.getUsername())
                 .build();
 
     }
