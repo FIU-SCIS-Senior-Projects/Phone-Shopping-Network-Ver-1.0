@@ -1,0 +1,101 @@
+package com.socialmobile.phoneshopping;
+
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import com.socialmobile.common.json.JSONObjectFactory;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * The main responsibility of this class is to provide a uniform way to accessing the resources and
+ * maintain communication between the server and this client applicaiton.
+ *
+ * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
+ * @author last modified by $Author: $
+ * @version $Revision: $ $Date: $
+ */
+
+
+public class CommunicationManager {
+    private static final CommunicationManager cInstance = new CommunicationManager();
+
+    private CommunicationManager() {
+
+    }
+
+    public static CommunicationManager instance() {
+        return cInstance;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public <T> T doGet(final String pUrl, final Class<T> pType) throws IOException {
+        HttpURLConnection connection = makeConnection(pUrl, "GET", 200, null);
+        try(InputStream inputStream = connection.getInputStream()) {
+            String responseString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            return JSONObjectFactory.getsInstance().stringToObject(responseString, pType);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private HttpURLConnection makeConnection(final String pUrl, final String pMethod, int pExpectedReturnCode, final Object pObject) throws IOException {
+        HttpURLConnection connection = initConnection(pUrl, pMethod);
+
+        if (pObject != null) {
+            connection.setDoOutput(true);
+            try(OutputStream outputStream = connection.getOutputStream()) {
+                writeData(outputStream, pObject);
+            }
+        }
+
+        connection.connect();
+        int response = connection.getResponseCode();
+        if (response != pExpectedReturnCode) {
+            String message = String.format("Connection to %s failed with status %d. Reason %s",
+                    pUrl, response, IOUtils.toString(connection.getErrorStream(), "UTF-8"));
+            throw new IOException(message);
+        }
+
+        return connection;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public <T> String doCreate(final String pUrl, final T pObject) throws IOException {
+        HttpURLConnection connection = makeConnection(pUrl, "POST", 201, pObject);
+        try(InputStream inputStream = connection.getInputStream()) {
+            return IOUtils.toString(inputStream, "UTF-8");
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public <T> T doUpdate(final String pUrl, final T pObject) throws IOException {
+        HttpURLConnection connection = makeConnection(pUrl, "PUT", 200, pObject);
+        try(InputStream inputStream = connection.getInputStream()) {
+            String responseString = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+            return (T) JSONObjectFactory.getsInstance().stringToObject(responseString, pObject.getClass());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private <T> void writeData(final OutputStream outputStream, final T pObject) throws IOException {
+        String objectAsString = JSONObjectFactory.getsInstance().objectToString(pObject);
+        IOUtils.write(objectAsString, outputStream, StandardCharsets.UTF_8);
+    }
+
+    private HttpURLConnection initConnection(final String pUrl, final String pMethod) throws IOException {
+        URL url = new URL(pUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setReadTimeout(10000);
+        connection.setConnectTimeout(15000);
+        connection.setRequestMethod(pMethod);
+        connection.setDoInput(true);
+        return connection;
+    }
+}
