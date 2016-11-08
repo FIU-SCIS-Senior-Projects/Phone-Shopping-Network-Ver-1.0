@@ -1,4 +1,4 @@
-package com.socialmobile.phoneshopping.service.api;
+package com.socialmobile.common.constants;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
