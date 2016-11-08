@@ -2,9 +2,7 @@ package com.socialmobile.phoneshopping.service.dao;
 
 import com.socialmobile.phoneshopping.service.domain.Roles;
 import com.socialmobile.phoneshopping.service.domain.User;
-import com.socialmobile.phoneshopping.service.domain.UserRoles;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

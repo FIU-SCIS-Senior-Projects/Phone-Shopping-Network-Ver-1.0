@@ -4,33 +4,37 @@ import com.socialmobile.common.model.UserProfile;
 import com.socialmobile.phoneshopping.service.api.UserProfileService;
 import com.socialmobile.phoneshopping.service.dao.UserProfileDAO;
 import com.socialmobile.phoneshopping.service.domain.User;
-
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
+
+@Transactional
 public class UserProfileManager implements UserProfileService {
-    private UserProfileDAO mUserProfileDAO;
+
+    @Autowired
+    private UserProfileDAO userProfileDAO;
 
     public UserProfileDAO getUserProfileDAO() {
-        return mUserProfileDAO;
+        return userProfileDAO;
     }
 
     public void setUserProfileDAO(final UserProfileDAO pUserProfileDAO) {
-        mUserProfileDAO = pUserProfileDAO;
+        userProfileDAO = pUserProfileDAO;
     }
 
     @Override
     public boolean exists(final String pIdToCheck) {
-        return mUserProfileDAO.exists(pIdToCheck);
+        return userProfileDAO.exists(pIdToCheck);
     }
 
     @Override
     public UserProfile get(final String pIdToGet) {
-        User user = mUserProfileDAO.get(pIdToGet);
+        User user = userProfileDAO.get(pIdToGet);
         if (user != null) {
             return userProfileFromUser(user);
         }
@@ -41,14 +45,14 @@ public class UserProfileManager implements UserProfileService {
     @Override
     public UserProfile create(final UserProfile pObjectToCreate) {
         User user = userFromUserProfile(pObjectToCreate);
-        user = mUserProfileDAO.create(user);
+        user = userProfileDAO.create(user);
         return userProfileFromUser(user);
     }
 
     @Override
     public UserProfile update(final String pTargetObjectId, final UserProfile pUpdateWith) {
         User user = userFromUserProfile(pUpdateWith);
-        User updatedUser = mUserProfileDAO.update(pTargetObjectId, user);
+        User updatedUser = userProfileDAO.update(pTargetObjectId, user);
         if (updatedUser != null) {
             return userProfileFromUser(updatedUser);
         }
@@ -58,7 +62,7 @@ public class UserProfileManager implements UserProfileService {
 
     @Override
     public boolean delete(final String pIdToDelete) {
-        return mUserProfileDAO.delete(pIdToDelete);
+        return userProfileDAO.delete(pIdToDelete);
     }
 
     private UserProfile userProfileFromUser(final User pFrom) {

@@ -68,8 +68,7 @@ public class UserProfileServiceResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(final UserProfile pUserProfile) {
-        Optional<UserProfile> profile = Optional.of(pUserProfile);
-        UserProfile userProfile = userProfileService.create(profile);
+        UserProfile userProfile = userProfileService.create(pUserProfile);
         return Response.status(Response.Status.CREATED)
                 .build();
 
@@ -80,8 +79,7 @@ public class UserProfileServiceResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{name}")
     public Response updateUser(final @PathParam("name") String pUsername, final UserProfile pUserProfile) throws JsonProcessingException {
-        Optional<UserProfile> profile = Optional.of(pUserProfile);
-        UserProfile userProfile = userProfileService.update(pUsername, profile);
+        UserProfile userProfile = userProfileService.update(pUsername, pUserProfile);
         if (userProfile == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .build();
