@@ -26,6 +26,7 @@ dependencies {
             [group:"org.springframework",             name:"spring-web",                version:spring_version],
             [group:"org.springframework",             name:"spring-orm",                version:spring_version],
             [group:"org.hibernate",                   name:"hibernate-core",            version:"5.2.3.Final"],
+            [group:"commons-dbcp",                    name:"commons-dbcp",              version:"1.4"]
     )
 //    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.1.4.RELEASE'
 //    compile 'org.hibernate:hibernate-core:4.3.6.Final'
@@ -36,10 +37,9 @@ dependencies {
     compile 'commons-dbcp:commons-dbcp:1.4'
     compile([group:"org.glassfish.jersey.ext", name:"jersey-spring3", version:jersey_version]) {
         exclude group:"org.springframework"
+        exclude group:"org.glassfish.hk2.external"
+//        transitive = false
     }
-    compile (
-
-    )
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
