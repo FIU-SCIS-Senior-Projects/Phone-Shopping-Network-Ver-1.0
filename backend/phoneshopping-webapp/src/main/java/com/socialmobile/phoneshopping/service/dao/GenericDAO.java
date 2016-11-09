@@ -55,7 +55,8 @@ public abstract class GenericDAO<T, I extends Serializable> implements ServiceBa
 
     @Override
     public boolean delete(final I pIdToDelete) {
-        getSessionFactory().getCurrentSession().delete(pIdToDelete);
+        T object = getSessionFactory().getCurrentSession().get(getEntity(), pIdToDelete);
+        getSessionFactory().getCurrentSession().delete(object);
         return true;
     }
 
