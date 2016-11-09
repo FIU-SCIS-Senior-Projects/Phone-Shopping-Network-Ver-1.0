@@ -40,6 +40,7 @@
             <array>
                 <value>com.socialmobile.phoneshopping.service.domain.User</value>
                 <value>com.socialmobile.phoneshopping.service.domain.Roles</value>
+                <value>com.socialmobile.phoneshopping.service.domain.ProductEntity</value>
                 <value>com.socialmobile.phoneshopping.service.domain.AnnotatedNamedQueries</value>
             </array>
         </property>
