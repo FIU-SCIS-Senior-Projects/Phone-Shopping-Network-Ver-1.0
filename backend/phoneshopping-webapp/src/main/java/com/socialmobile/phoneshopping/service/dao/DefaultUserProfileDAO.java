@@ -1,6 +1,7 @@
 package com.socialmobile.phoneshopping.service.dao;
 
 import com.socialmobile.common.constants.RoleNames;
+import com.socialmobile.phoneshopping.service.domain.AddressEntity;
 import com.socialmobile.phoneshopping.service.domain.Roles;
 import com.socialmobile.phoneshopping.service.domain.User;
 import org.hibernate.query.NativeQuery;
@@ -38,4 +39,39 @@ public class DefaultUserProfileDAO extends UserProfileDAO {
         return list;
     }
 
+    @Override
+    public void updateRoles(final List<Roles> pUpdatedRoles) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
+
+    @Override
+    public void addRoles(final List<Roles> pNewRoles) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
+
+    @Override
+    public void setHomeAddress(final AddressEntity pHomeAddress) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
+
+    @Override
+    public void setWorkAddress(final AddressEntity pWorkAddress) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
+
+    @Override
+    public void updateHomeAddress(final AddressEntity pHomeAddress) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
+
+    @Override
+    public void updateWorkAddress(final AddressEntity pWorkAddress) {
+//        TODO: to be implemented
+        throw new UnsupportedOperationException("This feature is not supported yet");
+    }
 }
