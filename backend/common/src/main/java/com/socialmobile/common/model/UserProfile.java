@@ -23,6 +23,11 @@ public class UserProfile {
     @JsonProperty("phone")
     private String mPhone;
 
+    @JsonProperty("homeAddress")
+    private Address mHomeAddress;
+
+    @JsonProperty("workAddress")
+    private Address mWorkAddress;
 
     public String getUsername() {
         return mUsername;
@@ -62,5 +67,21 @@ public class UserProfile {
 
     public void setPhone(final String pPhone) {
         mPhone = pPhone;
+    }
+
+    public Address getHomeAddress() {
+        return mHomeAddress;
+    }
+
+    public void setHomeAddress(final Address pHomeAddress) {
+        mHomeAddress = pHomeAddress;
+    }
+
+    public Address getWorkAddress() {
+        return mWorkAddress;
+    }
+
+    public void setWorkAddress(final Address pWorkAddress) {
+        mWorkAddress = pWorkAddress;
     }
 }
