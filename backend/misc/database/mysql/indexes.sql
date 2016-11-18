@@ -3,8 +3,7 @@
 -- -----------------------------------------------------
 CREATE UNIQUE INDEX idx_alo_zc_unique ON Address (addressLineOne, zipCode ASC);
 
-CREATE INDEX fk_placed_order_user_idx ON OrderPlacement (userName ASC);
-CREATE INDEX fk_placed_order_order_idx ON OrderPlacement (orderId ASC);
+CREATE UNIQUE INDEX idx_order_number_unique ON Orders (orderNumber ASC);
 
 CREATE UNIQUE INDEX idx_un_on_unique ON OrderPlacement (userName, orderId ASC);
 

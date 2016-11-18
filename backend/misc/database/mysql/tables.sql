@@ -61,7 +61,8 @@ CREATE TABLE IF NOT EXISTS Product (
 -- Table Order
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS Orders (
-  orderId VARCHAR(50) NOT NULL,
+  orderId INT NOT NULL,
+  orderNumber VARCHAR(50) NOT NULL,
   orderStatus VARCHAR(10) NULL,
   PRIMARY KEY (orderId))
   ENGINE = InnoDB;
@@ -71,7 +72,7 @@ CREATE TABLE IF NOT EXISTS Orders (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS OrderPlacement (
   userName VARCHAR(30) NOT NULL,
-  orderId VARCHAR(50) NULL,
+  orderId INT NULL,
   PRIMARY KEY (userName))
   ENGINE = InnoDB;
 
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS OrderPlacement (
 -- Table ProductOrder
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS ProductOrder (
-  orderId VARCHAR(50) NOT NULL,
+  orderId INT NOT NULL,
   productId INT NOT NULL,
   unitPrice FLOAT NULL,
   count INT NULL)
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS UserAddress (
 -- Table OrderAddress
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS OrderAddress (
-  orderId VARCHAR(50) NOT NULL,
+  orderId NOT NULL,
   addressId INT NOT NULL,
   typeName VARCHAR(10) NULL)
   ENGINE = InnoDB;
