@@ -48,7 +48,6 @@ public abstract class GenericDAO<T, I extends Serializable> implements ServiceBa
     @Override
     public T update(final I pTargetObjectId, final T pUpdateWith) {
         Session currentSession = getSessionFactory().getCurrentSession();
-        T oldObject = get(pTargetObjectId);
         currentSession.update(pUpdateWith);
         return pUpdateWith;
     }

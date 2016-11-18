@@ -25,8 +25,8 @@ public class Main  {
 
     public static void main(String[] as) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/applicationConfig.xml");
-//        testUserProfileService(context);
-        testProductService(context);
+        testUserProfileService(context);
+//        testProductService(context);
     }
 
     private static void testProductService(final ApplicationContext pContext) {
@@ -63,8 +63,12 @@ public class Main  {
 
         UserProfileManager manager = (UserProfileManager) context.getBean("userProfileService");
         try {
-            UserProfile profile1 = manager.create(getUserProfile("first.last"));
-            UserProfile profile = manager.get("first.last");
+            UserProfile profile1 = manager.create(getUserProfile("first_last"));
+            UserProfile profile = manager.get("first_last");
+            profile.setPhone("+8801711731394");
+            manager.update(profile.getUsername(), profile);
+            UserProfile profile2 = manager.get(profile.getUsername());
+            System.out.println("phone:: "+profile2.getPhone());
             System.out.println("PROFF:: "+(profile == profile1));
         } catch (Exception pE) {
             pE.printStackTrace();

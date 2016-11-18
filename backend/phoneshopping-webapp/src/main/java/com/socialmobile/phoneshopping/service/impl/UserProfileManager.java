@@ -51,7 +51,11 @@ public class UserProfileManager implements UserProfileService {
 
     @Override
     public UserProfile update(final String pTargetObjectId, final UserProfile pUpdateWith) {
-        User user = userFromUserProfile(pUpdateWith);
+        User user = userProfileDAO.get(pTargetObjectId);
+        user.setFirstName(pUpdateWith.getFirstName());
+        user.setLastName(pUpdateWith.getLastName());
+        user.setEmail(pUpdateWith.getEmail());
+        user.setPhone(pUpdateWith.getPhone());
         User updatedUser = userProfileDAO.update(pTargetObjectId, user);
         if (updatedUser != null) {
             return userProfileFromUser(updatedUser);

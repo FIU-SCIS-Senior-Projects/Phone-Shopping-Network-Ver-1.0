@@ -11,7 +11,6 @@ import java.util.List;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-@Service
 public abstract class UserProfileDAO extends GenericDAO<User, String> {
 
     @Override
