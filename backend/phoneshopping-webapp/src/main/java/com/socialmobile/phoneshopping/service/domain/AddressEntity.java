@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "addressId")
     private int mAddressId; //INT NOT NULL AUTO_INCREMENT,
 
     @Column(name = "addressLineOne")

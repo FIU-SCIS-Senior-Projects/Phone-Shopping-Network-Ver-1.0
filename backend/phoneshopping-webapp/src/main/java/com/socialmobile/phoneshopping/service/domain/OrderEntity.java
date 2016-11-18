@@ -81,7 +81,6 @@ public class OrderEntity {
         mShippingAddress = pShippingAddress;
     }
 
-
     @OneToMany
     @JoinColumn(name = "orderId")
     public List<ProductOrderEntity> getListedProducts() {
