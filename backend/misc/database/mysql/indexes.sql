@@ -1,8 +1,6 @@
 -- -----------------------------------------------------
 -- Indexes and Unique keys
 -- -----------------------------------------------------
-CREATE INDEX fk_user_role_role_idx ON UserRoles (roleId ASC);
-
 CREATE UNIQUE INDEX idx_alo_zc_unique ON Address (addressLineOne, zipCode ASC);
 
 CREATE INDEX fk_placed_order_user_idx ON OrderPlacement (userName ASC);
