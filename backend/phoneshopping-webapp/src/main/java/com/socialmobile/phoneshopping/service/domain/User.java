@@ -1,14 +1,12 @@
 package com.socialmobile.phoneshopping.service.domain;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -31,8 +29,8 @@ public class User implements Serializable {
 
     List<Roles> mRolesList;
 
-//    Set<Orders> mOrdersPlaced;
-//    Set<IiopUrl.Address> mAddresses;
+    private AddressEntity mHomeAddress;
+    private AddressEntity mWorkAddress;
 
     @Id
     @Basic
@@ -69,11 +67,35 @@ public class User implements Serializable {
     @OneToMany
     @JoinTable(
         name = "UserRoles",
-        joinColumns = @JoinColumn(name = "userName"),
-        inverseJoinColumns = @JoinColumn(name = "roleId")
+        joinColumns = @JoinColumn(name = "userName", updatable = false),
+        inverseJoinColumns = @JoinColumn(name = "roleId", updatable = false)
     )
     public List<Roles> getRolesList() {
         return mRolesList;
+    }
+
+    @OneToOne
+    @JoinTable(
+        name = "UserAddress",
+        joinColumns = @JoinColumn(name = "userName", updatable = false),
+        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
+    )
+    @Where(clause = "typeName = 'home'")
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    public AddressEntity getHomeAddress() {
+        return mHomeAddress;
+    }
+
+    @OneToOne
+    @JoinTable(
+        name = "UserAddress",
+        joinColumns = @JoinColumn(name = "userName", updatable = false),
+        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
+    )
+    @Where(clause = "typeName = 'work'")
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    public AddressEntity getWorkAddress() {
+        return mWorkAddress;
     }
 
     public void setUsername(final String pUsername) {
@@ -94,6 +116,14 @@ public class User implements Serializable {
 
     public void setPhone(final String pPhone) {
         mPhone = pPhone;
+    }
+
+    public void setHomeAddress(final AddressEntity pHomeAddress) {
+        mHomeAddress = pHomeAddress;
+    }
+
+    public void setWorkAddress(final AddressEntity pWorkAddress) {
+        mWorkAddress = pWorkAddress;
     }
 
     @Override
