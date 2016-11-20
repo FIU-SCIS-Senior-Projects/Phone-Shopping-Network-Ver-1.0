@@ -5,6 +5,9 @@ import com.socialmobile.phoneshopping.service.api.ProductService;
 import com.socialmobile.phoneshopping.service.api.ServiceBase;
 import com.socialmobile.phoneshopping.service.dao.ProductDAO;
 import com.socialmobile.phoneshopping.service.domain.ProductEntity;
+import com.socialmobile.phoneshopping.service.domain.ProductOrderEntity;
+import com.socialmobile.phoneshopping.service.domain.converter.Converter;
+import com.socialmobile.phoneshopping.service.domain.converter.JSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductManager implements ProductService {
     @Autowired
     private ProductDAO mProductDAO;
+
+    @Autowired
+    private JSONConverter jsonConverter;
 
     @Override
     public boolean exists(Integer pIdToCheck) {
@@ -41,18 +47,9 @@ public class ProductManager implements ProductService {
         return product;
     }
 
-    private ProductEntity toEntity(final Product pProduct) {
-        ProductEntity productEntity = new ProductEntity();
-        productEntity.setProductId(pProduct.getProductId());
-        productEntity.setTitle(pProduct.getTitle());
-        productEntity.setDescription(pProduct.getDescription());
-        productEntity.setAdditionalInfo(pProduct.getAdditionalInfo());
-        return productEntity;
-    }
-
     @Override
     public Product create(Product pObjectToCreate) {
-        ProductEntity productEntity = toEntity(pObjectToCreate);
+        ProductEntity productEntity = jsonConverter.toEntity(pObjectToCreate, ProductEntity.class);
         ProductEntity created = mProductDAO.create(productEntity);
         return fromEntity(created);
     }
