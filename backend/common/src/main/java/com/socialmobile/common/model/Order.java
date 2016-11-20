@@ -20,8 +20,11 @@ public class Order {
     @JsonProperty("orderStatus")
     private String mOrderStatus;
 
-    @JsonProperty("orderPlacer")
-    private String mOrderPlacer;
+    /**
+     * The identifier of the user who placed this order
+     */
+    @JsonProperty("username")
+    private String mUserName;
 
     @JsonProperty("billingAddress")
     private Address mBillingAddress;
@@ -36,8 +39,16 @@ public class Order {
         return mOrderId;
     }
 
+    public void setOrderId(final int pOrderId) {
+        mOrderId = pOrderId;
+    }
+
     public String getOrderNumber() {
         return mOrderNumber;
+    }
+
+    public void setOrderNumber(final String pOrderNumber) {
+        mOrderNumber = pOrderNumber;
     }
 
     public String getOrderStatus() {
@@ -48,12 +59,12 @@ public class Order {
         mOrderStatus = pOrderStatus;
     }
 
-    public String getOrderPlacer() {
-        return mOrderPlacer;
+    public String getUserName() {
+        return mUserName;
     }
 
-    public void setOrderPlacer(final String pOrderPlacer) {
-        mOrderPlacer = pOrderPlacer;
+    public void setUserName(final String pUserName) {
+        mUserName = pUserName;
     }
 
     public Address getBillingAddress() {

@@ -65,4 +65,18 @@
 
     <bean id="userProfileService" class="com.socialmobile.phoneshopping.service.impl.UserProfileManager">
     </bean>
+
+    <bean id="addressConverter" class="com.socialmobile.phoneshopping.service.domain.converter.json.AddressConverter"/>
+    <bean id="productConverter" class="com.socialmobile.phoneshopping.service.domain.converter.json.ProductConverter"/>
+    <bean id="orderConverter" class="com.socialmobile.phoneshopping.service.domain.converter.json.OrderConverter"/>
+
+    <bean id="jsonConverter" class="com.socialmobile.phoneshopping.service.domain.converter.JSONConverter">
+        <property name="converterMap">
+            <map key-type="java.lang.String" value-type="com.socialmobile.phoneshopping.service.domain.converter.Converter">
+                <entry key="com.socialmobile.phoneshopping.service.domain.AddressEntity" value-ref="addressConverter" />
+                <entry key="com.socialmobile.phoneshopping.service.domain.ProductEntity" value-ref="productConverter" />
+                <entry key="com.socialmobile.phoneshopping.service.domain.OrderEntity" value-ref="orderConverter" />
+            </map>
+        </property>
+    </bean>
 </beans>
