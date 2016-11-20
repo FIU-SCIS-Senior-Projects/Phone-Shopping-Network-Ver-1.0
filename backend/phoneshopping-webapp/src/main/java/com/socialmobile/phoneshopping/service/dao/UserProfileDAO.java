@@ -3,7 +3,6 @@ package com.socialmobile.phoneshopping.service.dao;
 import com.socialmobile.phoneshopping.service.domain.AddressEntity;
 import com.socialmobile.phoneshopping.service.domain.Roles;
 import com.socialmobile.phoneshopping.service.domain.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public abstract class UserProfileDAO extends GenericDAO<User, String> {
+public abstract class UserProfileDAO extends BaseDAO<User, String> {
 
     @Override
     protected Class<User> getEntity() {

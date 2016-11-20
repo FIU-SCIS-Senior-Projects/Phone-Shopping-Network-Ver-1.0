@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author last modified by $Author: $
  * @version $Revision: $ $Date: $
  */
-public abstract class GenericDAO<T, I extends Serializable> implements ServiceBase<T,I> {
+public abstract class BaseDAO<T, I extends Serializable> implements ServiceBase<T,I> {
     @Autowired
     private LocalSessionFactoryBean sessionFactoryBean;
 
