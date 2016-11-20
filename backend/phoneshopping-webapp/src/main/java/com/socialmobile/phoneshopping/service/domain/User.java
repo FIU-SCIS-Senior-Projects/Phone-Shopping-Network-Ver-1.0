@@ -1,9 +1,5 @@
 package com.socialmobile.phoneshopping.service.domain;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.Where;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -28,9 +24,6 @@ public class User implements Serializable {
     private String mPhone;
 
     List<Roles> mRolesList;
-
-    private AddressEntity mHomeAddress;
-    private AddressEntity mWorkAddress;
 
     @Id
     @Basic
@@ -67,35 +60,11 @@ public class User implements Serializable {
     @OneToMany
     @JoinTable(
         name = "UserRoles",
-        joinColumns = @JoinColumn(name = "userName", updatable = false),
-        inverseJoinColumns = @JoinColumn(name = "roleId", updatable = false)
+        joinColumns = @JoinColumn(name = "userName"),
+        inverseJoinColumns = @JoinColumn(name = "roleId")
     )
     public List<Roles> getRolesList() {
         return mRolesList;
-    }
-
-    @OneToOne
-    @JoinTable(
-        name = "UserAddress",
-        joinColumns = @JoinColumn(name = "userName", updatable = false),
-        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
-    )
-    @Where(clause = "typeName = 'home'")
-    @LazyToOne(value = LazyToOneOption.PROXY)
-    public AddressEntity getHomeAddress() {
-        return mHomeAddress;
-    }
-
-    @OneToOne
-    @JoinTable(
-        name = "UserAddress",
-        joinColumns = @JoinColumn(name = "userName", updatable = false),
-        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
-    )
-    @Where(clause = "typeName = 'work'")
-    @LazyToOne(value = LazyToOneOption.PROXY)
-    public AddressEntity getWorkAddress() {
-        return mWorkAddress;
     }
 
     public void setUsername(final String pUsername) {
@@ -116,14 +85,6 @@ public class User implements Serializable {
 
     public void setPhone(final String pPhone) {
         mPhone = pPhone;
-    }
-
-    public void setHomeAddress(final AddressEntity pHomeAddress) {
-        mHomeAddress = pHomeAddress;
-    }
-
-    public void setWorkAddress(final AddressEntity pWorkAddress) {
-        mWorkAddress = pWorkAddress;
     }
 
     @Override
