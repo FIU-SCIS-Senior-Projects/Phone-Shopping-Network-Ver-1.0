@@ -1,11 +1,10 @@
 package com.socialmobile.phoneshopping.service.domain;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -31,9 +30,22 @@ public class OrderEntity {
     @Column(name = "orderStatus")
     private String mOrderStatus;
 
+    @Column(name = "billingAddress")
+    private int mBillingAddressId;
+
+    @Column(name = "shippingAddress")
+    private int mShippingAddressId;
+
+    @Transient
     private User mOrderPlacer;
+
+    @Transient
     private AddressEntity mBillingAddress;
+
+    @Transient
     private AddressEntity mShippingAddress;
+
+    @Transient
     private List<ProductOrderEntity> mListedProducts;
 
     @OneToOne
@@ -51,38 +63,24 @@ public class OrderEntity {
     }
 
     @OneToOne
-    @JoinTable(
-        name = "OrderAddress",
-        joinColumns = @JoinColumn(name = "orderId", updatable = false),
-        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
-    )
-    @Where(clause = "typeName = 'billing'")
+    @JoinTable(name = "Address", foreignKey = @ForeignKey(name = "fk_order_address_billing"))
     @LazyToOne(value = LazyToOneOption.PROXY)
     public AddressEntity getBillingAddress() {
         return mBillingAddress;
     }
 
-    public void setBillingAddress(final AddressEntity pBillingAddress) {
-        mBillingAddress = pBillingAddress;
-    }
-
-    @JoinTable(
-        name = "OrderAddress",
-        joinColumns = @JoinColumn(name = "orderId", updatable = false),
-        inverseJoinColumns = @JoinColumn(name = "addressId", updatable = false)
-    )
-    @Where(clause = "typeName = 'shipping'")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinTable(name = "Address", foreignKey = @ForeignKey(name = "fk_order_address_shipping"))
+    @LazyToOne(value = LazyToOneOption.PROXY)
     public AddressEntity getShippingAddress() {
         return mShippingAddress;
     }
 
-    public void setShippingAddress(final AddressEntity pShippingAddress) {
-        mShippingAddress = pShippingAddress;
-    }
-
+//    @Access(value = AccessType.PROPERTY)
+//    @OneToMany(mappedBy = "order", targetEntity = ProductOrderEntity.class)
     @OneToMany
     @JoinColumn(name = "orderId")
+//    @Transient
     public List<ProductOrderEntity> getListedProducts() {
         return mListedProducts;
     }
@@ -114,5 +112,23 @@ public class OrderEntity {
 
     public void setOrderStatus(final String pOrderStatus) {
         mOrderStatus = pOrderStatus;
+    }
+
+    public void setBillingAddressId(final int pBillingAddressId) {
+        mBillingAddressId = pBillingAddressId;
+    }
+
+    public void setShippingAddressId(final int pShippingAddressId) {
+        mShippingAddressId = pShippingAddressId;
+    }
+
+    public void setBillingAddress(final AddressEntity pBillingAddress) {
+        mBillingAddress = pBillingAddress;
+        mBillingAddressId = pBillingAddress.getAddressId();
+    }
+
+    public void setShippingAddress(final AddressEntity pShippingAddress) {
+        mShippingAddress = pShippingAddress;
+        mShippingAddressId = pShippingAddress.getAddressId();
     }
 }

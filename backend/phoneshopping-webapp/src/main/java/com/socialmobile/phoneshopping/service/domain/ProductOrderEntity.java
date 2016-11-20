@@ -1,9 +1,9 @@
 package com.socialmobile.phoneshopping.service.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+
+import javax.persistence.*;
 
 /**
  * Created by dalam004 on 11/18/2016.
@@ -24,6 +24,34 @@ public class ProductOrderEntity {
     @Column(name = "count")
     private int mCount; //count INT NULL
 
+    @Transient
+    private OrderEntity mOrder;
+
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    public OrderEntity getOrder() {
+        return mOrder;
+    }
+
+    public void setOrder(final OrderEntity pOrder) {
+        mOrder = pOrder;
+    }
+
+    @Transient
+    private ProductEntity mProduct;
+
+    @OneToOne
+    @JoinColumn(name = "productId")
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    public ProductEntity getProduct() {
+        return mProduct;
+    }
+
+    public void setProduct(final ProductEntity pProduct) {
+        mProduct = pProduct;
+        mProductId = pProduct.getProductId();
+    }
 
     public int getOrderId() {
         return mOrderId;
