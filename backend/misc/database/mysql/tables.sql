@@ -64,6 +64,8 @@ CREATE TABLE IF NOT EXISTS Orders (
   orderId INT NOT NULL,
   orderNumber VARCHAR(50) NOT NULL,
   orderStatus VARCHAR(10) NULL,
+  shippingAddress INT,
+  billingAddress INT,
   PRIMARY KEY (orderId))
   ENGINE = InnoDB;
 
@@ -95,23 +97,4 @@ CREATE TABLE IF NOT EXISTS AddressTypes (
   PRIMARY KEY (typeName))
   ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table UserAddress
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS UserAddress (
-  userName VARCHAR(30) NOT NULL,
-  addressId INT NOT NULL,
-  typeName VARCHAR(10) NULL)
-  ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Table OrderAddress
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS OrderAddress (
-  orderId NOT NULL,
-  addressId INT NOT NULL,
-  typeName VARCHAR(10) NULL)
-  ENGINE = InnoDB;
 
