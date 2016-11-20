@@ -76,11 +76,8 @@ public class OrderEntity {
         return mShippingAddress;
     }
 
-//    @Access(value = AccessType.PROPERTY)
-//    @OneToMany(mappedBy = "order", targetEntity = ProductOrderEntity.class)
     @OneToMany
     @JoinColumn(name = "orderId")
-//    @Transient
     public List<ProductOrderEntity> getListedProducts() {
         return mListedProducts;
     }
@@ -130,5 +127,13 @@ public class OrderEntity {
     public void setShippingAddress(final AddressEntity pShippingAddress) {
         mShippingAddress = pShippingAddress;
         mShippingAddressId = pShippingAddress.getAddressId();
+    }
+
+    public int getBillingAddressId() {
+        return mBillingAddressId;
+    }
+
+    public int getShippingAddressId() {
+        return mShippingAddressId;
     }
 }
