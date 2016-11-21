@@ -23,8 +23,8 @@ public class OrderEntity {
     private int mOrderId;
 
     @Column(name = "orderNumber")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String mOrderNumber; //orderNumber VARCHAR(50) NOT NULL,
 
     @Column(name = "orderStatus")

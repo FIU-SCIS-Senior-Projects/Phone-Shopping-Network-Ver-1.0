@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -72,9 +73,12 @@ public class OrderServiceManager implements OrderService {
     public Order create(final Order pObjectToCreate) {
         OrderEntity orderEntity = jsonConverter.toEntity(pObjectToCreate, OrderEntity.class);
         orderEntity.setOrderStatus("placed");
+        orderEntity.setOrderNumber(UUID.randomUUID().toString());
 
-        validateAddress(orderEntity.getBillingAddress());
-        validateAddress(orderEntity.getShippingAddress());
+        int validBillingAddressId = validateAddress(orderEntity.getBillingAddress());
+        int validShippingAddressId = validateAddress(orderEntity.getShippingAddress());
+        orderEntity.setBillingAddressId(validBillingAddressId);
+        orderEntity.setShippingAddressId(validShippingAddressId);
 
         validateOrderedProducts(orderEntity.getListedProducts());
 
@@ -88,8 +92,7 @@ public class OrderServiceManager implements OrderService {
 
     private int validateAddress(final AddressEntity pGivenAddress) {
         if (pGivenAddress.getAddressId() == -1) {
-            int id = (int) mGenericDAO.save(pGivenAddress);
-            pGivenAddress.setAddressId(id);
+            return (int) mGenericDAO.save(pGivenAddress);
         }
 
         return pGivenAddress.getAddressId();
