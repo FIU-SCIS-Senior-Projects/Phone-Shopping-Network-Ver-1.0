@@ -71,6 +71,7 @@ public class OrderServiceManager implements OrderService {
     @Override
     public Order create(final Order pObjectToCreate) {
         OrderEntity orderEntity = jsonConverter.toEntity(pObjectToCreate, OrderEntity.class);
+        orderEntity.setOrderStatus("placed");
 
         validateAddress(orderEntity.getBillingAddress());
         validateAddress(orderEntity.getShippingAddress());
