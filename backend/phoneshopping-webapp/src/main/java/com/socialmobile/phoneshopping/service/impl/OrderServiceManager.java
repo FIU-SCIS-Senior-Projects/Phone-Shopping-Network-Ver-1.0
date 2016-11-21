@@ -80,14 +80,17 @@ public class OrderServiceManager implements OrderService {
         orderEntity.setBillingAddressId(validBillingAddressId);
         orderEntity.setShippingAddressId(validShippingAddressId);
 
-        validateOrderedProducts(orderEntity.getListedProducts());
-
         OrderEntity newOrder = mOrderServiceDAO.create(orderEntity);
+        saveOrderedProducts(newOrder);
+
         return jsonConverter.fromEntity(newOrder);
     }
 
-    private void validateOrderedProducts(final List<ProductOrderEntity> pListedProducts) {
-//        TODO: To be implemented
+    private void saveOrderedProducts(final OrderEntity pOrderEntity) {
+        for (ProductOrderEntity productOrderEntity : pOrderEntity.getListedProducts()) {
+            productOrderEntity.setOrderId(pOrderEntity.getOrderId());
+            mGenericDAO.save(productOrderEntity);
+        }
     }
 
     private int validateAddress(final AddressEntity pGivenAddress) {
