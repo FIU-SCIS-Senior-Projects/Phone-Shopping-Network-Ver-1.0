@@ -33,14 +33,30 @@ public class Main  {
 
         Main main = new Main(context);
         main.testFullWorkflow();
+        main.testExistingOrder(8);
+    }
+
+    private void testExistingOrder(final int pOrderId) throws JsonProcessingException {
+        OrderService service = mContext.getAutowireCapableBeanFactory().getBean(OrderService.class);
+        Order order = service.get(pOrderId);
+        System.out.println(JSONObjectFactory.getsInstance().objectToString(order));
     }
 
     private void testFullWorkflow() throws JsonProcessingException {
-        UserProfile userProfile = createUser("integrator");
+        UserProfile userProfile = getOrCreateUser("integrator7");
         Product product = createNewProduct();
         Order order = placeOrder(userProfile, product);
 
         System.out.println(JSONObjectFactory.getsInstance().objectToString(order));
+    }
+
+    private UserProfile getOrCreateUser(final String pIntegrator7) {
+        UserProfileManager manager = (UserProfileManager) mContext.getBean("userProfileService");
+        UserProfile userProfile = manager.get(pIntegrator7);
+        if (userProfile == null) {
+            userProfile = createUser(pIntegrator7);
+        }
+        return userProfile;
     }
 
     private Order placeOrder(final UserProfile pUserProfile, final Product pProduct) {
