@@ -121,7 +121,7 @@ public class OrderConverter implements Converter<Order, OrderEntity> {
     private AddressEntity getAddressEntity(final Address pAddress) {
         HashMap<String, String> valuesMap = new HashMap<>();
         valuesMap.put("address", pAddress.getAddressLineOne());
-        valuesMap.put("zipCode", pAddress.getZipCode());
+        valuesMap.put("zipcode", pAddress.getZipCode());
         List<AddressEntity> addressEntityList = mGenericDAO.listByNamedNativeQuery("findAddressByUniqueKey", valuesMap);
         if (addressEntityList == null || addressEntityList.isEmpty()) {
             return jsonConverter.toEntity(pAddress, AddressEntity.class);

@@ -33,9 +33,9 @@ public class JSONConverter {
     }
 
     public <M, E> E toEntity(final M pModel, final Class<E> pEntity) {
-        Converter<M, E> converter = getConverterFor((Class<E>) pEntity.getClass());
+        Converter<M, E> converter = getConverterFor(pEntity);
         if (converter == null) {
-            throw new IllegalStateException("No Converter found for "+pEntity.getClass().getName());
+            throw new IllegalStateException("No Converter found for "+pEntity.getName());
         }
 
         return converter.toEntity(pModel);
