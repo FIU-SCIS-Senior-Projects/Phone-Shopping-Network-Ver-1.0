@@ -2,8 +2,6 @@ package com.socialmobile.phoneshopping.service.domain;
 
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,7 +14,21 @@ import java.io.Serializable;
  */
 @Entity
 @NamedNativeQueries({
-    @NamedNativeQuery(name = "findRolesByName", query = "select * from Roles r where r.roleName = :rolename", resultClass = Roles.class)
+    @NamedNativeQuery(
+        name = "findRolesByName",
+        query = "select * from Roles r where r.roleName = :rolename",
+        resultClass = Roles.class
+    ),
+    @NamedNativeQuery(
+        name = "findAddressByUniqueKey",
+        query = "select * from Address a where a.addressLineOne = :address and a.zipCode = :zipcode",
+        resultClass = AddressEntity.class
+    ),
+    @NamedNativeQuery(
+        name = "orderedProductsListByIds",
+        query = "select * from ProductOrder po where po.productId in (:productIds) and po.orderId = :orderId",
+        resultClass = ProductOrderEntity.class
+    )
 })
 public class AnnotatedNamedQueries implements Serializable {
     @Id
