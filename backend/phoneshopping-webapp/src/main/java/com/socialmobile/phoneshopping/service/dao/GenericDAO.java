@@ -1,15 +1,12 @@
 package com.socialmobile.phoneshopping.service.dao;
 
-import com.socialmobile.phoneshopping.service.domain.Roles;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +48,6 @@ public class GenericDAO {
 
     public <T> List listByNamedNativeQuery(final String pNamedQuery, final Map<String, ? extends Object> pValuesMap) {
         NativeQuery<T> query = getSessionFactory().getCurrentSession().getNamedNativeQuery(pNamedQuery);
-        Query<T> re = getSessionFactory().getCurrentSession().getNamedQuery("");
-        re.setParameter("", "");
         return listByNamedQuery(query, pValuesMap);
     }
 
