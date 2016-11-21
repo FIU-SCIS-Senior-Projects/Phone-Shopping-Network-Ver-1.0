@@ -36,25 +36,29 @@ public class OrderEntity {
     @Column(name = "shippingAddress")
     private int mShippingAddressId = -1;
 
-    @Transient
-    private User mOrderPlacer;
-
-    @Transient
-    private AddressEntity mBillingAddress;
-
-    @Transient
-    private AddressEntity mShippingAddress;
-
-    @Transient
-    private List<ProductOrderEntity> mListedProducts;
-
     @OneToOne
     @JoinTable(
         name = "OrderPlacement",
-        foreignKey = @ForeignKey(name = "fk_placed_order"),
-        inverseForeignKey = @ForeignKey(name = "fk_user_placed_order")
+        joinColumns = @JoinColumn(name = "orderId"),
+        inverseJoinColumns = @JoinColumn(name = "userName")
     )
     @LazyToOne(LazyToOneOption.PROXY)
+    private User mOrderPlacer;
+
+    @OneToOne
+    @JoinColumn(name = "billingAddress", referencedColumnName = "addressId", updatable = false, insertable = false)
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    private AddressEntity mBillingAddress;
+
+    @OneToOne
+    @JoinColumn(name = "shippingAddress", referencedColumnName = "addressId", updatable = false, insertable = false)
+    @LazyToOne(value = LazyToOneOption.PROXY)
+    private AddressEntity mShippingAddress;
+
+    @OneToMany
+    @JoinColumn(name = "orderId", insertable = false, updatable = false)
+    private List<ProductOrderEntity> mListedProducts;
+
     public User getOrderPlacer() {
         return mOrderPlacer;
     }
@@ -62,22 +66,14 @@ public class OrderEntity {
         mOrderPlacer = pOrderPlacer;
     }
 
-    @OneToOne
-    @JoinTable(name = "Address", foreignKey = @ForeignKey(name = "fk_order_address_billing"))
-    @LazyToOne(value = LazyToOneOption.PROXY)
     public AddressEntity getBillingAddress() {
         return mBillingAddress;
     }
 
-    @OneToOne
-    @JoinTable(name = "Address", foreignKey = @ForeignKey(name = "fk_order_address_shipping"))
-    @LazyToOne(value = LazyToOneOption.PROXY)
     public AddressEntity getShippingAddress() {
         return mShippingAddress;
     }
 
-    @OneToMany
-    @JoinColumn(name = "orderId")
     public List<ProductOrderEntity> getListedProducts() {
         return mListedProducts;
     }
