@@ -31,10 +31,10 @@ public class OrderEntity {
     private String mOrderStatus;
 
     @Column(name = "billingAddress")
-    private int mBillingAddressId;
+    private int mBillingAddressId = -1;
 
     @Column(name = "shippingAddress")
-    private int mShippingAddressId;
+    private int mShippingAddressId = -1;
 
     @Transient
     private User mOrderPlacer;
