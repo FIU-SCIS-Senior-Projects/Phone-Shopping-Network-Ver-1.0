@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Product (
 -- Table Order
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS Orders (
-  orderId INT NOT NULL,
+  orderId INT NOT NULL AUTO_INCREMENT,
   orderNumber VARCHAR(50) NOT NULL,
   orderStatus VARCHAR(10) NULL,
   shippingAddress INT,
