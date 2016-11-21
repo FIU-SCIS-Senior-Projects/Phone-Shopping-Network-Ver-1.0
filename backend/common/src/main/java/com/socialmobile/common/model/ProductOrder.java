@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProductOrder {
 
     @JsonProperty("orderId")
-    private int mOrderId;
+    private int mOrderId = -1;
 
     @JsonProperty("productId")
-    private int mProductId;
+    private int mProductId = -1;
 
     @JsonProperty("unitPrice")
     private float mUnitPrice;

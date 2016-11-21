@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Address {
     @JsonProperty("addressId")
-    private int mAddressId;
+    private int mAddressId = -1;
 
     @JsonProperty("addressLineOne")
     private String mAddressLineOne;

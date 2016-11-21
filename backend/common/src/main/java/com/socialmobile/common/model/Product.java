@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class Product {
     @JsonProperty("productId")
-    private int mProductId;
+    private int mProductId = -1;
 
     @JsonProperty("title")
     private String mTitle;
