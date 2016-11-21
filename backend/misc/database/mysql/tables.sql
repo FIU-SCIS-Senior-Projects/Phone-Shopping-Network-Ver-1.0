@@ -74,8 +74,7 @@ CREATE TABLE IF NOT EXISTS Orders (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS OrderPlacement (
   userName VARCHAR(30) NOT NULL,
-  orderId INT NULL,
-  PRIMARY KEY (userName))
+  orderId INT NOT NULL)
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
