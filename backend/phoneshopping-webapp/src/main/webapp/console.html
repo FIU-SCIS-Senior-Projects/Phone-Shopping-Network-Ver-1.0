@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <title>KnockoutJS Templating - foreach used with Template</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h2>Friends List</h2>
+<div id="friends_form" class="form">
+    <p>Title of the Product: <input type="text" name="title" data-bind="value: product_title" /></p>
+    <p>Description of the Product: <input type="text" name="title" data-bind="value: product_desc" /></p>
+    <button onclick="buttonClicked();return false;">Create</button>
+</div>
+Here are the Friends from your contact page:
+<div data-bind="template: { name: 'product-template', foreach: products }"></div>
+
+<script type="text/html" id="product-template">
+    <details>
+        <summary><span data-bind="text: title"></span></summary>
+        <div><span data-bind="text: description"></span></div>
+    </details>
+    <!--<h3 data-bind="text: name"></h3>-->
+    <!--<p>Contact Number: <span data-bind="text: contactNumber"></span></p>-->
+    <!--<p>Email-id: <span data-bind="text: email"></span></p>-->
+</script>
+
+<script type="text/javascript">
+    function buttonClicked() {
+        var product = {
+            title: vm.product_title,
+            description: vm.product_desc
+        };
+        vm.addProduct(product);
+    }
+
+    function MyViewModel() {
+        this.product_title = ko.observable(40);
+        this.product_desc = ko.observable(50);
+
+        products = ko.observableArray();
+        this.addProduct = function (product){
+            products.push(product);
+        }
+    }
+
+    var vm = new MyViewModel();
+    ko.applyBindings(vm);
+</script>
+</body>
+</html>
