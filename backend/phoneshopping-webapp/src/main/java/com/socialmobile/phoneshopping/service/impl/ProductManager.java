@@ -43,23 +43,14 @@ public class ProductManager implements ProductService {
     @Override
     public Product get(Integer pIdToGet) {
         ProductEntity productEntity = mProductDAO.get(pIdToGet);
-        return fromEntity(productEntity);
-    }
-
-    private Product fromEntity(final ProductEntity pProductEntity) {
-        Product product = new Product();
-        product.setProductId(pProductEntity.getProductId());
-        product.setTitle(pProductEntity.getTitle());
-        product.setDescription(pProductEntity.getDescription());
-        product.setAdditionalInfo(pProductEntity.getAdditionalInfoAsMap());
-        return product;
+        return jsonConverter.fromEntity(productEntity);
     }
 
     @Override
     public Product create(Product pObjectToCreate) {
         ProductEntity productEntity = jsonConverter.toEntity(pObjectToCreate, ProductEntity.class);
         ProductEntity created = mProductDAO.create(productEntity);
-        return fromEntity(created);
+        return jsonConverter.fromEntity(created);
     }
 
     @Override
@@ -70,7 +61,7 @@ public class ProductManager implements ProductService {
             mProductDAO.update(pTargetObjectId, productEntity);
         }
 
-        return fromEntity(productEntity);
+        return jsonConverter.fromEntity(productEntity);
     }
 
     private void updateEntity(ProductEntity pProductEntity, final Product pUpdateWith) {
