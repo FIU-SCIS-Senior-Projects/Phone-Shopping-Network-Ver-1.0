@@ -2,10 +2,15 @@ package com.socialmobile.phoneshopping.service.impl;
 
 import com.socialmobile.common.model.UserProfile;
 import com.socialmobile.phoneshopping.service.api.UserProfileService;
+import com.socialmobile.phoneshopping.service.dao.GenericDAO;
 import com.socialmobile.phoneshopping.service.dao.UserProfileDAO;
 import com.socialmobile.phoneshopping.service.domain.User;
+import com.socialmobile.phoneshopping.service.domain.converter.JSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -17,7 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserProfileManager implements UserProfileService {
 
     @Autowired
+    private GenericDAO mGenericDAO;
+
+    @Autowired
     private UserProfileDAO userProfileDAO;
+
+    @Autowired
+    private JSONConverter jsonConverter;
+
 
     public UserProfileDAO getUserProfileDAO() {
         return userProfileDAO;
@@ -36,7 +48,7 @@ public class UserProfileManager implements UserProfileService {
     public UserProfile get(final String pIdToGet) {
         User user = userProfileDAO.get(pIdToGet);
         if (user != null) {
-            return userProfileFromUser(user);
+            return jsonConverter.fromEntity(user);
         }
 
         return null;
@@ -44,9 +56,9 @@ public class UserProfileManager implements UserProfileService {
 
     @Override
     public UserProfile create(final UserProfile pObjectToCreate) {
-        User user = userFromUserProfile(pObjectToCreate);
+        User user = jsonConverter.toEntity(pObjectToCreate, User.class);
         user = userProfileDAO.create(user);
-        return userProfileFromUser(user);
+        return jsonConverter.fromEntity(user);
     }
 
     @Override
@@ -58,7 +70,7 @@ public class UserProfileManager implements UserProfileService {
         user.setPhone(pUpdateWith.getPhone());
         User updatedUser = userProfileDAO.update(pTargetObjectId, user);
         if (updatedUser != null) {
-            return userProfileFromUser(updatedUser);
+            return jsonConverter.fromEntity(updatedUser);
         }
 
         return null;
@@ -69,27 +81,9 @@ public class UserProfileManager implements UserProfileService {
         return userProfileDAO.delete(pIdToDelete);
     }
 
-    private UserProfile userProfileFromUser(final User pFrom) {
-        UserProfile userProfile =  new UserProfile();
-        userProfile.setUsername(pFrom.getUsername());
-        userProfile.setFirstName(pFrom.getFirstName());
-        userProfile.setLastName(pFrom.getLastName());
-        userProfile.setEmail(pFrom.getEmail());
-        userProfile.setPhone(pFrom.getPhone());
-
-        return userProfile;
+    @Override
+    public List<UserProfile> getUsers(final int pStart, final int pCount) {
+        List<User> userList = mGenericDAO.listAll(User.class, pStart, pCount);
+        return userList.stream().map(user -> (UserProfile)jsonConverter.fromEntity(user)).collect(Collectors.toList());
     }
-
-    private User userFromUserProfile(final UserProfile pUser) {
-        User user =  new User();
-        user.setUsername(pUser.getUsername());
-        user.setFirstName(pUser.getFirstName());
-        user.setLastName(pUser.getLastName());
-        user.setEmail(pUser.getEmail());
-        user.setPhone(pUser.getPhone());
-
-        return user;
-    }
-
-
 }

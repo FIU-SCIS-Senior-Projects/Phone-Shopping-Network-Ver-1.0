@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Optional;
  * @version $Revision: $ $Date: $
  */
 
-@Path("user")
+@Path("users")
 public class UserProfileServiceResource {
 
     @Autowired
@@ -41,6 +42,13 @@ public class UserProfileServiceResource {
         boolean exists = userProfileService.exists(pUsername);
         Response.Status status = exists ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUsers(final @QueryParam("start") int pStart, final @QueryParam("count") int pCount) throws JsonProcessingException {
+        List<UserProfile> profileList = userProfileService.getUsers(pStart, pCount);
+        return Response.ok(JSONObjectFactory.getsInstance().objectToString(profileList)).build();
     }
 
     @GET
