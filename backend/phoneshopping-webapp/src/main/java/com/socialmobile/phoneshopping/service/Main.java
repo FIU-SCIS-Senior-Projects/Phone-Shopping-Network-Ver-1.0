@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -32,8 +33,19 @@ public class Main  {
 //        testProductService(context);
 
         Main main = new Main(context);
-        main.testFullWorkflow();
-        main.testExistingOrder(8);
+//        main.testFullWorkflow();
+//        main.testExistingOrder(3);
+//        main.testExistingOrder(4);
+//        main.testExistingOrder(5);
+//        main.testExistingOrder(6);
+//        main.testExistingOrder(7);
+        main.getAllOrders();
+    }
+
+    private void getAllOrders() throws JsonProcessingException {
+        OrderService service = mContext.getAutowireCapableBeanFactory().getBean(OrderService.class);
+        List<Order> orders = service.getOrders(0, 100);
+        System.out.println(JSONObjectFactory.getsInstance().objectToString(orders));
     }
 
     private void testExistingOrder(final int pOrderId) throws JsonProcessingException {
