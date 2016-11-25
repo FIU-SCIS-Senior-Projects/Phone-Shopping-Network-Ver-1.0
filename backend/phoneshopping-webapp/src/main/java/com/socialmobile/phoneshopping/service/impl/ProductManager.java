@@ -3,6 +3,7 @@ package com.socialmobile.phoneshopping.service.impl;
 import com.socialmobile.common.model.Product;
 import com.socialmobile.phoneshopping.service.api.ProductService;
 import com.socialmobile.phoneshopping.service.api.ServiceBase;
+import com.socialmobile.phoneshopping.service.dao.GenericDAO;
 import com.socialmobile.phoneshopping.service.dao.ProductDAO;
 import com.socialmobile.phoneshopping.service.domain.ProductEntity;
 import com.socialmobile.phoneshopping.service.domain.ProductOrderEntity;
@@ -11,6 +12,9 @@ import com.socialmobile.phoneshopping.service.domain.converter.JSONConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -21,6 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class ProductManager implements ProductService {
+
+    @Autowired
+    private GenericDAO mGenericDAO;
+
     @Autowired
     private ProductDAO mProductDAO;
 
@@ -74,5 +82,14 @@ public class ProductManager implements ProductService {
     @Override
     public boolean delete(Integer pIdToDelete) {
         return mProductDAO.delete(pIdToDelete);
+    }
+
+    @Override
+    public List<Product> getProducts(final int pStart, final int pCount) {
+        List<ProductEntity> entityList = mGenericDAO.listAll(ProductEntity.class, pStart, pCount);
+        List<Product> products = entityList.stream()
+                .map(entity -> (Product)jsonConverter.fromEntity(entity))
+                .collect(Collectors.toList());
+        return products;
     }
 }

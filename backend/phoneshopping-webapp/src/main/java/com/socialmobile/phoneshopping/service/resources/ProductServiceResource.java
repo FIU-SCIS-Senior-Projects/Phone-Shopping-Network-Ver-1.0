@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response;
  * @version $Revision: $ $Date: $
  */
 
-@Path("product")
+@Path("products")
 public class ProductServiceResource {
     @Autowired
     private ProductService mProductService;
@@ -29,6 +30,15 @@ public class ProductServiceResource {
 
     public void setProductService(ProductService pProductService) {
         mProductService = pProductService;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProducts(final @QueryParam("start") int pStart, final @QueryParam("count") int pCount)
+            throws JsonProcessingException {
+        List<Product> products = mProductService.getProducts(pStart, pCount);
+
+        return Response.ok(JSONObjectFactory.getsInstance().objectToString(products)).build();
     }
 
     @GET
