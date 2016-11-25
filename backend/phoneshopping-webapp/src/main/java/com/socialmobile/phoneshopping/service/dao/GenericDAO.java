@@ -46,15 +46,23 @@ public class GenericDAO {
         return listByNamedQuery(query, pValuesMap);
     }
 
-    public <T> List listByNamedNativeQuery(final String pNamedQuery, final Map<String, ? extends Object> pValuesMap) {
+    public <T> List<T> listByNamedNativeQuery(final String pNamedQuery, final Map<String, ? extends Object> pValuesMap) {
         NativeQuery<T> query = getSessionFactory().getCurrentSession().getNamedNativeQuery(pNamedQuery);
         return listByNamedQuery(query, pValuesMap);
     }
 
-    private <T> List listByNamedQuery(final Query<T> pQuery, final Map<String, ? extends Object> pValuesMap) {
+    private <T> List<T> listByNamedQuery(final Query<T> pQuery, final Map<String, ? extends Object> pValuesMap) {
         for (Map.Entry<String, ? extends Object> entry : pValuesMap.entrySet()) {
             pQuery.setParameter(entry.getKey(), entry.getValue());
         }
         return pQuery.list();
+    }
+
+    public <T> List<T> listAll(final Class<T> pEntityClass, final int pStart, final int pCount) {
+        String queryString = String.format("select o from %s o", pEntityClass.getSimpleName());
+        Query<T> query = getSessionFactory().getCurrentSession().createQuery(queryString);
+        query.setMaxResults(pCount);
+        query.setFirstResult(pStart);
+        return query.list();
     }
 }
