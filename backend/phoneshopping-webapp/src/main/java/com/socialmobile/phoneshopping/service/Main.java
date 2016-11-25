@@ -39,7 +39,17 @@ public class Main  {
 //        main.testExistingOrder(5);
 //        main.testExistingOrder(6);
 //        main.testExistingOrder(7);
-        main.getAllOrders();
+//        main.getAllOrders();
+
+        main.getAllProducts();
+    }
+
+    private void getAllProducts() throws JsonProcessingException {
+        ProductService service = mContext.getAutowireCapableBeanFactory().getBean(ProductService.class);
+        List<Product> products = service.getProducts(0, 100);
+        for (Product product : products) {
+            System.out.println(JSONObjectFactory.getsInstance().objectToString(product));
+        }
     }
 
     private void getAllOrders() throws JsonProcessingException {
