@@ -65,9 +65,13 @@ public class OrderConverter implements Converter<Order, OrderEntity> {
         order.setOrderNumber(pEntity.getOrderNumber());
         order.setOrderStatus(pEntity.getOrderStatus());
         order.setUserName(pEntity.getOrderPlacer().getUsername());
-        order.setBillingAddress(jsonConverter.fromEntity(pEntity.getBillingAddress()));
-        order.setShippingAddress(jsonConverter.fromEntity(pEntity.getShippingAddress()));
+
+        Converter<Address, AddressEntity> addressConverter = jsonConverter.getConverterFor(AddressEntity.class);
+        order.setBillingAddress(addressConverter.fromEntity(pEntity.getBillingAddress()));
+        order.setShippingAddress(addressConverter.fromEntity(pEntity.getShippingAddress()));
+
         order.setListedProducts(createProductListingFromEntity(pEntity.getListedProducts()));
+
         return order;
     }
 

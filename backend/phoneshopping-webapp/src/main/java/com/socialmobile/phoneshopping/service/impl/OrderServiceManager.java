@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,5 +122,17 @@ public class OrderServiceManager implements OrderService {
     public boolean delete(final Integer pIdToDelete) {
 //        TODO:: To be implemented
         return false;
+    }
+
+    @Override
+    public List<Order> getOrders(final int pIndex, final int pCount) {
+        List<OrderEntity> orderEntities = mGenericDAO.listAll(OrderEntity.class, pIndex, pCount);
+
+        ArrayList<Order> list = new ArrayList<>(orderEntities.size());
+        for (OrderEntity orderEntity : orderEntities) {
+            list.add(jsonConverter.fromEntity(orderEntity));
+        }
+
+        return list;
     }
 }
