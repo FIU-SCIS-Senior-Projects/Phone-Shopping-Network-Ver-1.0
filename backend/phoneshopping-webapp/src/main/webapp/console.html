@@ -25,6 +25,10 @@
       margin-bottom: 20px;
     }
 
+    .field {
+      padding: 5px 0;
+    }
+
     ol.content {
       display: block;
       counter-reset: item;
@@ -38,12 +42,36 @@
     /*counter-increment: item;*/
     /*}*/
 
-    ol.content li {
-      padding: 6px 12px;
+    ol.content li.elements {
+      padding: 12px;
+      border-bottom: 2px solid darkslateblue;
     }
 
     ol.content li:nth-of-type(2n+1) {
       background-color: #d3e3f3;
+    }
+
+    .control {
+      float: right;
+      margin: 0 5px;
+    }
+
+    li.info {
+      margin: 5px 0;
+      padding: 5px 0;
+    }
+    summary {
+      /*border-bottom: 1px solid darkblue;*/
+      margin-bottom: 6px;
+    }
+
+    input {
+      padding: 6px;
+    }
+
+    .clearfloat {
+      float: none;
+      clear: both;
     }
 
   </style>
@@ -82,28 +110,7 @@
           </div>
 
           <div role="tabpanel" class="tab-pane" id="products">
-            <div class="product form">
-              <div class="field-sets">
-                <div>Product Title: <input type="text" name="title" data-bind="value: product.title"/></div>
-                <div>Product Description: <input type="text" name="description" data-bind="value: product.description"/>
-                </div>
-                <div class="more-info">
-                  <div class="wrapper">
-                    <span class="left">Additional Info</span>
-
-                  </div>
-                  <ol data-bind="foreach: product.moreInfo">
-                    <li class="info input" style="margin: 5px 0;">
-                      <input type="text" name="name" class="name" style="float: left;" data-bind="value: name"/>
-                      <input type="text" name="value" class="value" style="float:none; width: auto"
-                             data-bind="value: value"/>
-                      <button class="btn btn-primary" style="float: right" onclick="addInfo(this);">+</button>
-                      <button class="btn btn-danger" style="float: right" onclick="removeInfo(this);">-</button>
-                    </li>
-                  </ol>
-                </div>
-              </div>
-            </div>
+            <ol class="content" data-bind="template: { name: 'products-template', foreach: products }"></ol>
             <!--<div data-bind="template: { name: 'products-template', foreach: products }"></div>-->
           </div>
           <div role="tabpanel" class="tab-pane" id="orders">
@@ -115,16 +122,63 @@
   </div>
 </div>
 
-<div id="knockout_templates_users">
+<div id="knockout_templates">
   <script type="text/html" id="users-template">
     <li class="elements">
-      <details>
+      <details class="clearfloat">
         <summary class="username column-header"><strong data-bind="text: username"></strong></summary>
-        <div class="details">
-          <div class="first-name">First name: <span data-bind="text: firstname"></span></div>
-          <div class="last-name">Last name: <span data-bind="text: lastname"></span></div>
-          <div class="email">Email: <span data-bind="text: email"></span></div>
-          <div class="phone">Phone: <span data-bind="text: phone"></span></div>
+        <div class="details clearfloat">
+          <div class="first-name field">First name: <span data-bind="text: firstname"></span></div>
+          <div class="last-name field">Last name: <span data-bind="text: lastname"></span></div>
+          <div class="email field">Email: <span data-bind="text: email"></span></div>
+          <div class="phone field">Phone: <span data-bind="text: phone"></span></div>
+        </div>
+      </details>
+    </li>
+  </script>
+
+  <script type="text/html" id="products-template">
+    <li class="elements">
+      <details>
+        <summary class="column-header">
+          <strong data-bind="text: title"></strong>
+          <button class="btn btn-danger control" onclick="deleteProduct(this);">Delete</button>
+          <button class="btn btn-primary control" onclick="updateProduct(this);">Save</button>
+          <button class="btn btn-success control" onclick="createProduct(this);">New</button>
+        </summary>
+        <div class="details clearfloat">
+          <div class="product form">
+            <div class="field-sets">
+              <div class="field">
+                <span class="col-md-3">Product Id:</span>
+                <input class="col-md-9" type="text" name="title" data-bind= "value: id"/>
+              </div>
+              <div class="field">
+                <span class="col-md-3">Product Title:</span>
+                <input class="col-md-9" type="text" name="title" data-bind="value: title"/>
+              </div>
+              <div class="field">
+                <span class="col-md-3">Product Description:</span>
+                <input class="col-md-9" type="text" name="description" data-bind="value: description"/>
+              </div>
+              <div class="more-info">
+                <div class="wrapper">
+                  <span class="left">Additional Info</span>
+                  <ol data-bind="foreach: moreInfo">
+                    <li class="info input clearfloat">
+                      <div>
+                        <input type="text" name="name" class="name" style="float: left;" data-bind="value: name"/>
+                        <input type="text" name="value" class="value" style="float:none; width: 60%"
+                               data-bind="value: value"/>
+                        <button class="btn btn-primary control" onclick="addInfo(this);">+</button>
+                        <button class="btn btn-danger control" onclick="removeInfo(this);">-</button>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </details>
     </li>
@@ -137,35 +191,113 @@
       self.value = ko.observable(pValue);
     }
 
-    function Product(pTitle, pDescription) {
+    function Product(pId, pTitle, pDescription) {
       var self = this;
+      self.id = ko.observable(pId);
       self.title = ko.observable(pTitle);
       self.description = ko.observable(pDescription);
       self.moreInfo = ko.observableArray();
     }
 
     function addInfo(pElement) {
-      var parentLi = $(pElement).parent();
-      var index = parentLi.index();
-      console.log("AddIno::: index: " + index);
-      if (index != -1) {
-        userVM.product.moreInfo.splice(index + 1, 0, new NameValuePair("name", "value"));
-      }
-      else {
-        userVM.product.moreInfo.push(new NameValuePair("name", "value"));
-      }
+      manageInfo(pElement, false);
     }
 
     function removeInfo(pElement) {
+      manageInfo(pElement, true);
+    }
+
+    function manageInfo(pElement, pDelete) {
       var parentLi = $(pElement).parent();
+      var farParent = parentLi.parent().closest("li");
+
       var index = parentLi.index();
-      console.log("RemoveIno::: index: " + index);
-      if (index != -1) {
-        userVM.product.moreInfo.splice(index, 1);
+      var farIndex = farParent.index();
+
+      console.log("AddIno::: index: " + index+":::: productIndex: "+farIndex);
+      if (farIndex != -1) {
+        var info = userVM.products()[farIndex].moreInfo();
+        if (index != -1) {
+          if (pDelete) {
+            info.splice(index, 1);
+          }
+          else {
+            info.splice(index + 1, 0, new NameValuePair("name", "value"));
+          }
+        }
+        else {
+          if (pDelete) {
+            info.pop();
+          }
+          else {
+            info.push(new NameValuePair("name", "value"));
+          }
+        }
       }
-      else {
-        userVM.product.moreInfo.pop();
+    }
+
+    function deleteProduct(pElement) {
+      var index = $(pElement).closest("li").index();
+      console.log("Delete Project: index: "+index);
+      var product = userVM.products()[index];
+      $.ajax({
+        url: baseUrl+"/products/"+product.id(),
+        method: "DELETE"
+      }).done(function () {
+        userVM.products.splice(index, 1);
+      })
+    }
+
+    function createProduct(pElement) {
+      var index = $(pElement).closest("li").index();
+      console.log("Delete Project: index: "+index);
+      var product = new Product(-1, "New", "No description");
+      product.moreInfo.push("", "");
+      userVM.products.splice(index, 0, product);
+    }
+
+    function updateProduct(pElement) {
+      var index = $(pElement).closest("li").index();
+      console.log("Update Project: index: "+index);
+      var product = userVM.products()[index];
+
+      var method = "POST";
+      var url = baseUrl+"/products";
+      if (product.id() !== -1) {
+        method = "PUT";
+        url = url + "/" + product.id()
       }
+
+      var toSave = {
+        title: product.title(),
+        description: product.description(),
+        info: {}
+      };
+      for (var pair in product.moreInfo()) {
+        if (pair.name !== "" && pair.name !== "name" && pair.value !== "" && pair.value !== "value") {
+          toSave.info[pair.name] = pair.value;
+        }
+      }
+
+      var strToSave = JSON.stringify(toSave);
+      console.log("Sending :: "+strToSave);
+      $.ajax({
+        url: url,
+        method: method,
+        contentType: "application/json",
+        data: strToSave,
+        statusCode: {
+          201: function(pData) {
+            console.log("Created: "+pData);
+            product.id = parseInt(pData);
+          },
+          200: function(pData) {
+            console.log("SAVVVEDDDD:: "+pData)
+          }
+        }
+      }).done(function (pData) {
+        product.id = pData.productId
+      })
     }
 
     function UsersViewModel() {
@@ -177,42 +309,38 @@
 
 
       self.products = ko.observableArray();
-      self.product = new Product("title", "description");
-      self.product.moreInfo.push(new NameValuePair("name", "value"));
+      self.addProduct = function(pProduct) {
+        self.products.push(pProduct);
+      };
     }
 
     var userVM = new UsersViewModel();
     ko.applyBindings(userVM);
 
     var baseUrl = "http://psns:8080/phoneshopping-webapp/service";
+//    $.ajax({
+//      url: baseUrl + "/users"
+//    }).done(function (data) {
+//      $(data).each(function (index, user) {
+//        userVM.addUser(user);
+//      });
+//    });
+
     $.ajax({
-      url: baseUrl + "/users"
-    }).done(function (data) {
-      $(data).each(function (index, user) {
-        userVM.addUser(user);
-        console.log("Data: " + user + "::  " + typeof(user));
+      url: baseUrl + "/products"
+    }).done(function (pResult) {
+      $(pResult).each(function (index, pData) {
+        var product = new Product(pData.productId, pData.title, pData.description);
+        for (var key in pData.info) {
+          product.moreInfo.push(new NameValuePair(key, pData.info[key]));
+        }
+        userVM.addProduct(product);
+        console.log("Data: " + product.title + "::  " + typeof(user));
       });
-    })
+    });
   </script>
 </div>
 
-<div id="knockout_templates_products">
-
-  <script type="text/html" id="products-template">
-    <details>
-      <summary class="username"><span data-bind="text: username"></span></summary>
-      <div class="details">
-        <div class="first-name"><span data-bind="text: firstName"></span></div>
-        <div class="last-name"><span data-bind="text: lastName"></span></div>
-        <div class="email"><span data-bind="text: email"></span></div>
-        <div class="phone"><span data-bind="text: phone"></span></div>
-      </div>
-    </details>
-  </script>
-
-  <script type="text/javascript">
-
-  </script>
 </div>
 
 <script type="text/javascript">
