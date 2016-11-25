@@ -10,6 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author <a href="mailto:dalam004@fiu.edu">Dewan Moksedul Alam</a>
@@ -22,6 +23,13 @@ public class OrderServiceResource {
 
     @Autowired
     private OrderService mOrderService;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrders(final @QueryParam("start") int pStart, final @QueryParam("count") int pCount) throws JsonProcessingException {
+        List<Order> orders = mOrderService.getOrders(pStart, pCount);
+        return Response.ok(JSONObjectFactory.getsInstance().objectToString(orders)).build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
