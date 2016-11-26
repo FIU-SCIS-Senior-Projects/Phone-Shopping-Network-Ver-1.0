@@ -1,0 +1,13 @@
+group 'com.socialmobile.phoneshopping'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
