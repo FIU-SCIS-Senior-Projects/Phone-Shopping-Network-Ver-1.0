@@ -407,7 +407,7 @@
     var userVM = new UsersViewModel();
     ko.applyBindings(userVM);
 
-    var baseUrl = "http://psns:8080/phoneshopping-webapp/service";
+    var baseUrl = location.origin+"/phoneshopping-webapp/service";
     $.ajax({
       url: baseUrl + "/users"
     }).done(function (data) {
