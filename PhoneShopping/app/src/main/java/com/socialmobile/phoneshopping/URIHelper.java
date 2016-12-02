@@ -1,5 +1,12 @@
 package com.socialmobile.phoneshopping;
 
+import org.apache.commons.io.Charsets;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 /**
  * A temporary class for generating the urls to accessing the resources from the server. Ideally the
  * client app should not assume anything about these. For now, this approach is being used to keep
@@ -33,7 +40,13 @@ public class URIHelper {
      * @param pUserName The Identifier of the user
      * @return The suitable url for accessing the specific user.
      */
-    public static String getUrlForUser(final String pUserName) {
-        return String.format("%s/%s", getUrlForUser(), pUserName);
+    public static String getUrlForUser(final String pUserName) throws UnsupportedEncodingException {
+        return String.format("%s/%s", getUrlForUser(), encode(pUserName));
     }
+
+    private static String encode(final String pPart) throws UnsupportedEncodingException {
+        return URLEncoder.encode(pPart, StandardCharsets.UTF_8.name());
+    }
+
+
 }
