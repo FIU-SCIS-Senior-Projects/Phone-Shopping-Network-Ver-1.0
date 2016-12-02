@@ -29,19 +29,17 @@ public class Main  {
 
     public static void main(String[] as) throws JsonProcessingException {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/applicationConfig.xml");
-//        testUserProfileService(context);
-//        testProductService(context);
 
         Main main = new Main(context);
-//        main.testFullWorkflow();
+        main.testFullWorkflow();
+
 //        main.testExistingOrder(3);
 //        main.testExistingOrder(4);
 //        main.testExistingOrder(5);
 //        main.testExistingOrder(6);
 //        main.testExistingOrder(7);
 //        main.getAllOrders();
-
-        main.getAllProducts();
+//        main.getAllProducts();
     }
 
     private void getAllProducts() throws JsonProcessingException {
