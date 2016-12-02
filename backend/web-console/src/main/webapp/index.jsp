@@ -119,7 +119,45 @@
           </div>
 
           <div role="tabpanel" class="tab-pane" id="products">
-            <ol class="content" data-bind="template: { name: 'products-template', foreach: products }"></ol>
+            <ol class="content" data-bind="foreach: products">
+              <li class="elements clearfloat">
+                <details>
+                  <summary class="column-header">
+                    <strong data-bind="text: title"></strong>
+                    <button class="btn btn-danger control" onclick="deleteProduct(this);">Delete</button>
+                    <button class="btn btn-primary control" onclick="updateProduct(this);">Save</button>
+                    <button class="btn btn-success control" onclick="createProduct(this);">New</button>
+                  </summary>
+                  <div class="details clearfloat">
+                    <div class="product form">
+                      <div class="field-sets">
+                        <div class="field">
+                          <span class="col-md-3">Product Id:</span>
+                          <input class="col-md-9" type="text" name="title" data-bind="value: id"/>
+                        </div>
+                        <div class="field">
+                          <span class="col-md-3">Product Title:</span>
+                          <input class="col-md-9" type="text" name="title" data-bind="value: title"/>
+                        </div>
+                        <div class="field">
+                          <span class="col-md-3">Product Description:</span>
+                          <input class="col-md-9" type="text" name="description" data-bind="value: description"/>
+                        </div>
+                        <div class="more-info">
+                          <div class="wrapper">
+                            <span class="left">Additional Info</span>
+                            <ol data-bind="template : { name: 'product-more-info-template', foreach: moreInfo}">
+
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </details>
+              </li>
+            </ol>
+            <%--<ol class="content" data-bind="template: { name: 'products-template', foreach: products }"></ol>--%>
             <!--<div data-bind="template: { name: 'products-template', foreach: products }"></div>-->
           </div>
           <div role="tabpanel" class="tab-pane" id="orders">
@@ -146,44 +184,9 @@
     </li>
   </script>
 
-  <script type="text/html" id="products-template">
-    <li class="elements clearfloat">
-      <details>
-        <summary class="column-header">
-          <strong data-bind="text: title"></strong>
-          <button class="btn btn-danger control" onclick="deleteProduct(this);">Delete</button>
-          <button class="btn btn-primary control" onclick="updateProduct(this);">Save</button>
-          <button class="btn btn-success control" onclick="createProduct(this);">New</button>
-        </summary>
-        <div class="details clearfloat">
-          <div class="product form">
-            <div class="field-sets">
-              <div class="field">
-                <span class="col-md-3">Product Id:</span>
-                <input class="col-md-9" type="text" name="title" data-bind="value: id"/>
-              </div>
-              <div class="field">
-                <span class="col-md-3">Product Title:</span>
-                <input class="col-md-9" type="text" name="title" data-bind="value: title"/>
-              </div>
-              <div class="field">
-                <span class="col-md-3">Product Description:</span>
-                <input class="col-md-9" type="text" name="description" data-bind="value: description"/>
-              </div>
-              <div class="more-info">
-                <div class="wrapper">
-                  <span class="left">Additional Info</span>
-                  <ol data-bind="template : { name: 'product-more-info-template', foreach: moreInfo}">
-
-                  </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </details>
-    </li>
-  </script>
+  <%--<script type="text/html" id="products-template">--%>
+    <%----%>
+  <%--</script>--%>
 
   <script type="text/javascript">
     function Address(pAddress) {
@@ -212,6 +215,59 @@
       self.billingAddress = pBilling;
       self.shippingAddress = pShipping;
       self.products = pProducts;
+    }
+
+    function Product(pId, pTitle, pDescription) {
+      var self = this;
+      self.id = ko.observable(pId);
+      self.title = ko.observable(pTitle);
+      self.description = ko.observable(pDescription);
+      self.moreInfo = ko.observableArray();
+      self.addInfo = function(pAfter) {
+        var index = getIndex(pAfter);
+        var toAdd = new NameValuePair(self, "name", "value");
+        console.log("addInfo: "+index);
+        if (index == -1) {
+          self.moreInfo.push(toAdd);
+        }
+        else {
+          self.moreInfo.splice(index+1, 0, toAdd);
+        }
+      };
+      self.removeInfo = function(pThis) {
+        var index = getIndex(pThis);
+        if (index != -1) {
+          self.moreInfo.splice(index, 1);
+        }
+      };
+
+      function getIndex(pPair) {
+        var index = -1;
+        if (pPair != undefined) {
+          for(var i = 0; i<self.moreInfo().length; i++) {
+            console.log("name: "+self.moreInfo()[i].name());
+            if (self.moreInfo()[i].name() == pPair.name()) {
+              index = i;
+              break;
+            }
+          }
+        }
+
+        return index;
+      }
+    }
+
+    function ProductViewModel(pProduct) {
+      var self = this;
+
+      self.id = ko.observable(pProduct.id);
+      self.title = ko.observable(pProduct.title);
+      self.description = ko.observable(pProduct.description);
+      self.moreInfo = ko.observableArray();
+      for (var info in pProduct.moreInfo) {
+        self.moreInfo().push(info);
+      }
+      self.product = pProduct;
     }
   </script>
 
@@ -242,7 +298,34 @@
               </div>
               <div class="field row">
                 <span class="col-md-3">Shipping address:</span>
-                <span class="col-md-9" data-bind="text: shippingAddress.addressLineOne"/>
+                <div class="col-md-9">
+                  <span data-bind="text: shippingAddress.addressLineOne"/>
+                  <span data-bind="text: shippingAddress.city"/>
+                  <span data-bind="text: shippingAddress.state"/>
+                  <span data-bind="text: shippingAddress.zipCode"/>
+                </div>
+              </div>
+              <div class="field row">
+                <span class="col-md-3">Ordered Items:</span>
+                <div class="col-md-9">
+                  <ol data-bind="foreach: products">
+                    <li>
+                      <div class="field row">
+                        <strong class="col-md-3">Product Id: </strong>
+                        <span class="col-md-9" data-bind="text: productId"/>
+                      <%--</div>--%>
+                      <%--<div class="field row">--%>
+                        <strong class="col-md-3">Unit Price: </strong>
+                        <span class="col-md-9" data-bind="text: unitPrice"/>
+                      <%--</div>--%>
+                      <%--<div class="field row">--%>
+                        <strong class="col-md-3">Count: </strong>
+                        <span class="col-md-9" data-bind="text: count"/>
+                      </div>
+                    </li>
+                    </li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
@@ -256,25 +339,22 @@
       <div>
         <input type="text" name="name" class="name" style="float: left;" data-bind="value: name"/>
         <input type="text" name="value" class="value" style="float:none; width: 60%" data-bind="value: value"/>
-        <button class="btn btn-primary control" onclick="addInfo(this);">+</button>
+        <button class="btn btn-primary control" data-bind="click:$data.addInfo">+</button>
         <button class="btn btn-danger control" onclick="removeInfo(this);">-</button>
       </div>
     </li>
   </script>
 
   <script type="text/javascript">
-    function NameValuePair(pName, pValue) {
+    function NameValuePair(pParentVM, pName, pValue) {
       var self = this;
+      self.parentVM = pParentVM;
       self.name = ko.observable(pName);
       self.value = ko.observable(pValue);
-    }
-
-    function Product(pId, pTitle, pDescription) {
-      var self = this;
-      self.id = ko.observable(pId);
-      self.title = ko.observable(pTitle);
-      self.description = ko.observable(pDescription);
-      self.moreInfo = ko.observableArray();
+      self.addInfo = function() {
+        self.parentVM.addInfo(self);
+        console.log("In nameValue pair add info")
+      }
     }
 
     function addInfo(pElement) {
@@ -298,18 +378,18 @@
         console.log("Before: " + info.length);
         if (index != -1) {
           if (pDelete) {
-            info.splice(index, 1);
+            userVM.products()[farIndex].moreInfo().splice(index, 1);
           }
           else {
-            info.splice(index + 1, 0, new NameValuePair("name", "value"));
+            userVM.products()[farIndex].moreInfo().splice(index + 1, 0, new NameValuePair(userVM.products()[farIndex], "name", "value"));
           }
         }
         else {
           if (pDelete) {
-            info.pop();
+            userVM.products()[farIndex].moreInfo().pop();
           }
           else {
-            info.push(new NameValuePair("name", "value"));
+            userVM.products()[farIndex].moreInfo().push(new NameValuePair(userVM.products()[farIndex], "name", "value"));
           }
         }
         console.log("After: " + info.length + ":::" + userVM.products()[farIndex].moreInfo().length);
@@ -332,7 +412,7 @@
       var index = $(pElement).closest("li").index();
       console.log("Create Product: index: " + index);
       var product = new Product(-1, "New", "No description");
-      product.moreInfo.push(new NameValuePair("", ""));
+      product.moreInfo.push(new NameValuePair(product, "", ""));
       userVM.products.splice(index, 0, product);
     }
 
@@ -373,15 +453,17 @@
         statusCode: {
           201: function (pData) {
             console.log("Created: " + pData);
-            product.id = ko.observable(parseInt(pData));
+            product.id(parseInt(pData));// = ko.observable(parseInt(pData));
+            window.status = "The product with id "+pData+" is created";
             console.log("After creation: " + product.id());
           },
           200: function (pData) {
+            window.status = "The product with id "+pData+" is saved";
             console.log("SAVVVEDDDD:: " + pData)
           }
         }
       }).done(function (pData) {
-        product.id = pData.productId
+
       })
     }
 
@@ -396,7 +478,11 @@
       self.products = ko.observableArray();
       self.addProduct = function (pProduct) {
         self.products.push(pProduct);
+//        self.products.push(new ProductViewModel(pProduct));
       };
+      self.getProductAtIndex = function(pIndex) {
+
+      }
 
       self.orders = ko.observableArray();
       self.addOrder = function (pOrder) {
@@ -422,7 +508,7 @@
       $(pResult).each(function (index, pData) {
         var product = new Product(pData.productId, pData.title, pData.description);
         for (var key in pData.info) {
-          product.moreInfo.push(new NameValuePair(key, pData.info[key]));
+          product.moreInfo().push(new NameValuePair(product, key, pData.info[key]));
         }
         userVM.addProduct(product);
         console.log("Data: " + product.title + "::  " + typeof(user));
