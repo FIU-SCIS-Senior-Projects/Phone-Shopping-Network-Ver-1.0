@@ -31,7 +31,7 @@ public class URIHelper {
      * @return The base url for accessing the resource for user.
      */
     public static String getUrlForUser() {
-        return String.format("%s/user", SERVICE_BASE_URL);
+        return String.format("%s/users", SERVICE_BASE_URL);
     }
 
     /**
