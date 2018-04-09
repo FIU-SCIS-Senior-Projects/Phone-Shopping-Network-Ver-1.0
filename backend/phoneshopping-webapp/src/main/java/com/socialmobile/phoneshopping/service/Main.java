@@ -33,7 +33,7 @@ public class Main  {
 //        testProductService(context);
 
         Main main = new Main(context);
-//        main.testFullWorkflow();
+        main.testFullWorkflow();
 //        main.testExistingOrder(3);
 //        main.testExistingOrder(4);
 //        main.testExistingOrder(5);
@@ -69,6 +69,7 @@ public class Main  {
         Product product = createNewProduct();
         Order order = placeOrder(userProfile, product);
 
+        System.out.println("User: "+JSONObjectFactory.getsInstance().objectToString(userProfile));
         System.out.println(JSONObjectFactory.getsInstance().objectToString(order));
     }
 
