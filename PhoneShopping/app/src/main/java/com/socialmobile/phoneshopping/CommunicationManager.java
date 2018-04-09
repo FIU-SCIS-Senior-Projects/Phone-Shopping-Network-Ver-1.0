@@ -26,6 +26,8 @@ import java.nio.charset.StandardCharsets;
 
 public class CommunicationManager {
     private static final CommunicationManager cInstance = new CommunicationManager();
+    private static final String DEFAULT_CONTENT_TYPE = "application/json";
+    private static final String CONTENT_TYPE_HEADER_FIELD = "Content-Type";
 
     private CommunicationManager() {
 
@@ -47,6 +49,7 @@ public class CommunicationManager {
 
         connection.setDoInput(true);
         if (pInput != null) {
+            connection.addRequestProperty(CONTENT_TYPE_HEADER_FIELD, DEFAULT_CONTENT_TYPE);
             connection.setDoOutput(true);
             try(OutputStream outputStream = connection.getOutputStream()) {
                 writeData(outputStream, pInput);

@@ -1,0 +1,5 @@
+
+<Context antiResourceLocking="false" privileged="true" >
+    <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+           allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|66.229.137.211|2601:58b:8404:e60:e12e:9750:8a49:ec80|131.94.186.23" />
+</Context>
